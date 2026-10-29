@@ -1,19 +1,21 @@
 import { demos } from "@/config/site";
 import { ArrowUpRightIcon } from "./Icons";
+import SplitTitle from "./SplitTitle";
 
 export default function Examples() {
   return (
     <section id="exemples" className="section examples">
-      <div className="wrap">
+      <div className="wrap" data-fx="section">
         <div className="section__head">
-          <h2 className="section__title">Des sites déjà en ligne</h2>
-          <p className="section__lead">
+          <SplitTitle className="section__title" text="Des sites déjà en ligne" />
+          <p className="section__lead" data-fx="fade">
             Des sites de démonstration réalisés par Nova Web Dz. Ouvrez-les sur votre téléphone pour voir le rendu réel.
           </p>
         </div>
         <ul className="examples__list">
           {demos.map((d) => (
-            <li key={d.url}>
+            <li key={d.url} className="examples__item">
+              <span className="examples__rule" aria-hidden="true" />
               <a className="examples__row" href={d.url} target="_blank" rel="noopener noreferrer">
                 <span className="examples__name">{d.name}</span>
                 <span className="examples__label">{d.label}</span>

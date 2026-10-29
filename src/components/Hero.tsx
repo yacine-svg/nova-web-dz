@@ -3,7 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { offers } from "@/config/site";
 import { scrollToId, prefersReducedMotion } from "@/lib/scroll";
+import { useSelection } from "./SelectionProvider";
 import { Fx } from "./Glass";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,66 +14,44 @@ const lines = ["Choisissez.", "Voyez le prix.", "Écrivez-nous."];
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
+  const { setFilter } = useSelection();
 
   useEffect(() => {
     const el = root.current;
     if (!el || prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // One orchestrated entrance: lines rise out of their masks, then the glass drops land
+      // In: lines rise out of their masks, then the rest lands
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.from(".hero__line-inner", { yPercent: 115, duration: 1.15, stagger: 0.1 }).from(
-        ".hero__orb",
-        { scale: 0, duration: 1.5, stagger: 0.14, ease: "elastic.out(1, 0.5)" },
-        0.45,
-      );
+      tl.from(".hero__line-inner", { yPercent: 118, rotation: 4, duration: 1.2, stagger: 0.11 })
+        .from(".hero__lead", { y: 40, opacity: 0, filter: "blur(10px)", duration: 1 }, 0.55)
+        .from(".hero__actions .btn", { scale: 0.5, y: 30, duration: 1.2, stagger: 0.1, ease: "elastic.out(1, 0.6)" }, 0.7)
+        .from(".offer", { scale: 0.4, y: 40, duration: 1.2, stagger: 0.09, ease: "elastic.out(1, 0.65)" }, 0.8);
 
-      // Slow idle float
-      gsap.utils.toArray<HTMLElement>(".hero__orb").forEach((orb, i) => {
-        gsap.to(orb, {
-          y: i % 2 ? 16 : -18,
-          rotation: i % 2 ? -6 : 6,
-          duration: 4.5 + i * 1.3,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        });
+      // Out: the three lines slide apart and the rest drifts up as you scroll away
+      const out = gsap.timeline({
+        scrollTrigger: { trigger: el, start: "top top", end: "bottom 15%", scrub: 0.7 },
+        defaults: { ease: "none" },
       });
-
-      // Drops drift up at different speeds while the page scrolls
-      gsap.utils.toArray<HTMLElement>(".hero__orb-track").forEach((track, i) => {
-        gsap.to(track, {
-          y: -140 * (i + 1),
-          ease: "none",
-          scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true },
-        });
-      });
+      // Exit tweens target the wrappers, entrance tweens the inner pieces, so the two never fight
+      out
+        .to(".hero__line--1", { xPercent: -22, opacity: 0 }, 0)
+        .to(".hero__line--2", { xPercent: 18, opacity: 0 }, 0)
+        .to(".hero__line--3", { xPercent: -14, opacity: 0 }, 0)
+        .to(".hero__title", { scale: 0.86, filter: "blur(6px)", transformOrigin: "50% 0%" }, 0)
+        .to(".hero__lead-wrap", { y: -70, opacity: 0 }, 0)
+        // glass pieces move and shrink, they don't fade (fading switches off their blur)
+        .to(".hero__actions", { y: -90, scale: 0.88, transformOrigin: "100% 100%" }, 0)
+        .to(".hero__offers", { y: -130, scale: 0.9, transformOrigin: "0% 100%" }, 0);
     }, el);
 
-    // Drops follow the pointer a little
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    const followers = finePointer
-      ? gsap.utils.toArray<HTMLElement>(".hero__orb-follow", el).map((node, i) => ({
-          depth: (i + 1) * 16,
-          x: gsap.quickTo(node, "x", { duration: 1.2, ease: "power3" }),
-          y: gsap.quickTo(node, "y", { duration: 1.2, ease: "power3" }),
-        }))
-      : [];
-    const onMove = (e: PointerEvent) => {
-      const nx = e.clientX / window.innerWidth - 0.5;
-      const ny = e.clientY / window.innerHeight - 0.5;
-      followers.forEach((f) => {
-        f.x(nx * f.depth);
-        f.y(ny * f.depth);
-      });
-    };
-    if (finePointer) window.addEventListener("pointermove", onMove);
-
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
+
+  const pick = (category: (typeof offers)[number]["category"]) => {
+    setFilter(category);
+    scrollToId("services");
+  };
 
   return (
     <section id="top" className="hero" ref={root}>
@@ -84,24 +64,14 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="hero__orbs" aria-hidden="true">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className={`hero__orb-track hero__orb-track--${n}`}>
-              <div className="hero__orb-follow">
-                <div className="hero__orb glass glass--lens">
-                  <Fx />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
         <div className="hero__foot">
-          <p className="hero__lead">
-            Nova Web Dz crée des sites web, des applications et des visuels pour les commerces et les entreprises en
-            Algérie. Composez votre demande en deux minutes&nbsp;: le tarif s&apos;affiche en dinars, et la suite se
-            règle sur WhatsApp.
-          </p>
+          <div className="hero__lead-wrap">
+            <p className="hero__lead">
+            Sites web et systèmes sur mesure, logos, présentations, montage vidéo et mise en page de rapports PFE, pour
+            les entreprises et les étudiants en Algérie. Composez votre demande&nbsp;: le tarif s&apos;affiche en dinars,
+            et la suite se règle sur WhatsApp.
+            </p>
+          </div>
           <div className="hero__actions">
             <button type="button" className="btn btn--primary" onClick={() => scrollToId("services")}>
               Composer mon projet
@@ -111,10 +81,18 @@ export default function Hero() {
               Voir des exemples
             </button>
           </div>
-          <ul className="hero__facts" aria-label="En bref">
-            <li>Tarifs affichés en DA</li>
-            <li>Paiement par BaridiMob</li>
-            <li>Suivi sur WhatsApp</li>
+          <ul className="hero__offers" aria-label="Ce que fait Nova Web Dz">
+            {offers.map((o) => (
+              <li key={o.category}>
+                <button type="button" className="offer glass glass--edge" onClick={() => pick(o.category)}>
+                  <Fx />
+                  <span className="offer__emoji" aria-hidden="true">
+                    {o.emoji}
+                  </span>
+                  {o.label}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

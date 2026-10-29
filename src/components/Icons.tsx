@@ -58,11 +58,25 @@ export function MenuIcon({ open, size = 18 }: IconProps & { open: boolean }) {
   );
 }
 
-/** Nova Web Dz mark: a four-point star */
-export function NovaMark({ size = 20, className }: IconProps) {
+/** The Nova Web Dz "N" with two sparkles, traced from the logo (1080 grid) */
+export const LOGO_GLYPHS =
+  "M298 326H412L603 617V326H717V796H603L412 506V796H298Z M824 165L846 283L963 305L846 326L824 445L802 326L683 305L802 283Z M932 408L940 448L980 456L940 464L932 505L924 464L883 456L924 448Z";
+
+/**
+ * Round logo badge: logo gradient with the white N and sparkles.
+ * `gradientId` must be unique on the page.
+ */
+export function NovaLogo({ size = 40, gradientId, className }: IconProps & { gradientId: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" className={className} aria-hidden="true" fill="currentColor">
-      <path d="M12 1.5c.6 5.4 2.9 9 10.5 10.5C14.9 13.5 12.6 17.1 12 22.5 11.4 17.1 9.1 13.5 1.5 12 9.1 10.5 11.4 6.9 12 1.5Z" />
+    <svg width={size} height={size} viewBox="229 70 820 820" className={className} aria-hidden="true">
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#4F46E5" />
+          <stop offset="1" stopColor="#06B6D4" />
+        </linearGradient>
+      </defs>
+      <circle cx="639" cy="480" r="410" fill={`url(#${gradientId})`} />
+      <path d={LOGO_GLYPHS} fill="#fff" />
     </svg>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import gsap from "gsap";
-import { categories, services, type CategoryId } from "@/config/site";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { categories, services } from "@/config/site";
 import { formatDA } from "@/lib/pricing";
 import { useLiquidBlob } from "@/lib/useLiquidBlob";
 import { prefersReducedMotion } from "@/lib/scroll";
@@ -11,19 +12,34 @@ import { Fx } from "./Glass";
 import { CheckIcon, CloseIcon, PlusIcon } from "./Icons";
 import AnimatedNumber from "./AnimatedNumber";
 import Addons from "./Addons";
-
-type Filter = CategoryId | "all";
+import SplitTitle from "./SplitTitle";
 
 export default function Services() {
-  const { selected, toggleService, removeService, totals, openSheet } = useSelection();
-  const [filter, setFilter] = useState<Filter>("all");
+  const { selected, toggleService, removeService, totals, openSheet, filter, setFilter } = useSelection();
+  const tilesRef = useRef<HTMLDivElement>(null);
+  const firstFilter = useRef(true);
 
   const segRef = useRef<HTMLDivElement>(null);
   const segBlobRef = useRef<HTMLSpanElement>(null);
   useLiquidBlob(segRef, segBlobRef, filter);
 
-  const visible = filter === "all" ? services : services.filter((s) => s.category === filter);
   const count = totals.items.length;
+
+  // Changing the filter: re-measure scroll positions, then the visible tiles bounce back in
+  useEffect(() => {
+    if (firstFilter.current) {
+      firstFilter.current = false;
+      return;
+    }
+    ScrollTrigger.refresh();
+    if (prefersReducedMotion() || !tilesRef.current) return;
+    const shown = tilesRef.current.querySelectorAll(".tile:not([hidden])");
+    gsap.fromTo(
+      shown,
+      { scale: 0.6, y: 40, rotation: (i: number) => (i % 2 ? 3 : -3) },
+      { scale: 1, y: 0, rotation: 0, duration: 1, stagger: 0.06, ease: "elastic.out(1, 0.7)", overwrite: true },
+    );
+  }, [filter]);
 
   const onTile = (id: string) => (e: MouseEvent<HTMLButtonElement>) => {
     toggleService(id);
@@ -36,11 +52,11 @@ export default function Services() {
 
   return (
     <section id="services" className="section services">
-      <div className="wrap">
+      <div className="wrap" data-fx="section">
         <div className="section__head services__head">
           <div>
-            <h2 className="section__title">Composez votre projet</h2>
-            <p className="section__lead">
+            <SplitTitle className="section__title" text="Composez votre projet" />
+            <p className="section__lead" data-fx="fade">
               Touchez un ou plusieurs services pour les ajouter. Les prix sont des tarifs de départ en dinars&nbsp;; le
               prix final est confirmé avec vous sur WhatsApp.
             </p>
@@ -69,13 +85,16 @@ export default function Services() {
         </div>
 
         <div className="services__layout">
-          <div className="tiles">
-            {visible.map((s) => {
+          <div className="tiles" ref={tilesRef}>
+            {services.map((s) => {
               const on = selected.includes(s.id);
+              // all tiles stay in the page (hidden when filtered out) so scroll animations keep track of them
+              const shown = filter === "all" || s.category === filter;
               return (
                 <button
                   key={s.id}
                   type="button"
+                  hidden={!shown}
                   className={`tile glass tile--${s.size} ${on ? "is-on" : ""}`}
                   aria-pressed={on}
                   onClick={onTile(s.id)}

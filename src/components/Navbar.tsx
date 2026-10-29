@@ -7,7 +7,7 @@ import { scrollToId } from "@/lib/scroll";
 import { useLiquidBlob } from "@/lib/useLiquidBlob";
 import { useSelection } from "./SelectionProvider";
 import { Fx } from "./Glass";
-import { MenuIcon, NovaMark } from "./Icons";
+import { MenuIcon, NovaLogo } from "./Icons";
 
 export default function Navbar() {
   const { selected, openSheet } = useSelection();
@@ -109,7 +109,7 @@ export default function Navbar() {
         <a href="#top" className="nav__brand" onClick={go("top")} aria-label="Nova Web Dz, retour en haut">
           <span className="nav__logo glass">
             <Fx />
-            <NovaMark size={18} />
+            <NovaLogo gradientId="nova-logo-nav" className="nav__logo-mark" />
           </span>
           <span className="nav__name">Nova Web Dz</span>
         </a>

@@ -11,13 +11,20 @@ export const site = {
   instagramHandle: "@nova_webdz",
 };
 
-export type CategoryId = "web" | "app" | "design";
+export type CategoryId = "web" | "design" | "pfe";
 
 export const categories: { id: CategoryId | "all"; label: string }[] = [
   { id: "all", label: "Tout" },
-  { id: "web", label: "Sites web" },
-  { id: "app", label: "Applications" },
-  { id: "design", label: "Design et vidéo" },
+  { id: "web", label: "Sites et systèmes" },
+  { id: "design", label: "Design et montage" },
+  { id: "pfe", label: "Rapports PFE" },
+];
+
+/** The three offers, as written on the Instagram bio. Shown in the hero; each one filters the picker. */
+export const offers: { emoji: string; label: string; category: CategoryId }[] = [
+  { emoji: "💻", label: "Sites web & systèmes sur mesure", category: "web" },
+  { emoji: "🎨", label: "Logos · Présentations · Montage", category: "design" },
+  { emoji: "🎓", label: "Rapports PFE & mise en page", category: "pfe" },
 ];
 
 export type Service = {
@@ -31,11 +38,12 @@ export type Service = {
   /** true = "à partir de" (starting price) */
   from?: boolean;
   delay: string;
-  /** Visual weight of the tile in the grid */
+  /** Tile width: "lg" = half a row, "md" = a third of a row */
   size: "lg" | "md";
 };
 
 export const services: Service[] = [
+  // Sites web & systèmes sur mesure
   {
     id: "vitrine",
     category: "web",
@@ -61,34 +69,24 @@ export const services: Service[] = [
     category: "web",
     name: "Boutique en ligne",
     blurb: "Catalogue, panier et commandes avec paiement à la livraison, partout en Algérie.",
-    includes: ["Catalogue et panier", "Commande avec paiement à la livraison", "Tableau de suivi des commandes"],
+    includes: ["Catalogue et panier", "Commande avec paiement à la livraison", "Suivi des commandes"],
     price: 85000,
     from: true,
     delay: "3 à 4 semaines",
-    size: "md",
+    size: "lg",
   },
   {
-    id: "webapp",
-    category: "app",
-    name: "Application web",
-    blurb: "Une plateforme avec comptes : réservations, espace élèves, gestion interne.",
+    id: "systeme",
+    category: "web",
+    name: "Système sur mesure",
+    blurb: "Gestion de stock, réservations, espace clients ou élèves : un outil web fait pour votre activité.",
     includes: ["Comptes et connexion", "Espace administrateur", "Base de données"],
     price: 120000,
     from: true,
     delay: "Selon le projet",
-    size: "md",
+    size: "lg",
   },
-  {
-    id: "mobile",
-    category: "app",
-    name: "Application mobile",
-    blurb: "Une app Android et iPhone pour vos clients, publiée sur les stores.",
-    includes: ["Android et iOS", "Notifications", "Publication sur les stores"],
-    price: 150000,
-    from: true,
-    delay: "Selon le projet",
-    size: "md",
-  },
+  // Logos · Présentations · Montage
   {
     id: "logo",
     category: "design",
@@ -100,24 +98,45 @@ export const services: Service[] = [
     size: "md",
   },
   {
-    id: "instagram",
+    id: "presentation",
     category: "design",
-    name: "Pack visuels Instagram",
-    blurb: "10 publications et stories à vos couleurs, prêtes à poster.",
-    includes: ["10 visuels", "Formats post et story", "Modèles réutilisables"],
-    price: 6000,
-    delay: "3 jours",
+    name: "Présentation PowerPoint",
+    blurb: "Des diapositives claires et à vos couleurs pour présenter un projet, une offre ou un cours.",
+    includes: ["Jusqu'à 15 diapositives", "Design et animations", "Fichiers PowerPoint et PDF"],
+    price: 4000,
+    delay: "2 à 3 jours",
     size: "md",
   },
   {
-    id: "video",
+    id: "montage",
     category: "design",
-    name: "Vidéo promo",
-    blurb: "Une vidéo courte qui montre votre site ou votre commerce, pour Reels et TikTok.",
-    includes: ["30 à 45 secondes", "Format vertical", "Musique et textes"],
+    name: "Montage vidéo",
+    blurb: "Vos vidéos montées pour Reels, TikTok ou YouTube : coupes, textes et musique.",
+    includes: ["Jusqu'à 1 minute", "Sous-titres et textes", "Format vertical ou horizontal"],
     price: 5000,
     delay: "2 à 3 jours",
     size: "md",
+  },
+  // Rapports PFE & mise en page
+  {
+    id: "rapport",
+    category: "pfe",
+    name: "Mise en page du rapport PFE",
+    blurb: "Votre rapport mis aux normes de votre université, propre et cohérent du début à la fin.",
+    includes: ["Page de garde et sommaire automatique", "Figures, tableaux et pages numérotés", "Bibliographie et version PDF"],
+    price: 6000,
+    delay: "3 à 5 jours",
+    size: "lg",
+  },
+  {
+    id: "soutenance",
+    category: "pfe",
+    name: "Présentation de soutenance",
+    blurb: "Les diapositives de votre soutenance, construites à partir de votre rapport.",
+    includes: ["15 à 25 diapositives", "Schémas et graphiques refaits proprement", "Fichiers PowerPoint et PDF"],
+    price: 5000,
+    delay: "3 à 4 jours",
+    size: "lg",
   },
 ];
 
@@ -128,7 +147,7 @@ export type Addon = {
   monthly?: boolean;
 };
 
-/** Options shown only when a website or an app is selected */
+/** Options shown only when a website or a system is selected */
 export const addons: Addon[] = [
   { id: "domaine", name: "Nom de domaine et hébergement (1 an)", price: 6000 },
   { id: "langue", name: "Deuxième langue (arabe ou anglais)", price: 8000 },
@@ -145,9 +164,9 @@ export const navLinks = [
 
 export const steps = [
   { title: "Vous choisissez", text: "Sélectionnez un ou plusieurs services. Le total s'affiche en dinars." },
-  { title: "Vous laissez vos coordonnées", text: "Nom et numéro de téléphone : le formulaire prépare votre message WhatsApp." },
+  { title: "Vous laissez vos coordonnées", text: "Nom et numéro de téléphone : le formulaire prépare votre message WhatsApp." },
   { title: "On en parle sur WhatsApp", text: "On précise le contenu, les délais et le prix final avant de commencer." },
-  { title: "Votre projet est livré", text: "Mise en ligne et fichiers remis. Paiement par BaridiMob, selon les étapes convenues." },
+  { title: "Votre projet est livré", text: "Site mis en ligne ou fichiers remis. Paiement par BaridiMob, selon les étapes convenues." },
 ];
 
 /** Live demo sites. Check the labels match each site. */
@@ -165,19 +184,23 @@ export const demos = [
 
 export const faq = [
   {
-    q: "Les prix affichés sont-ils définitifs ?",
-    a: "Ce sont des tarifs de départ. Le prix final dépend du contenu et des fonctionnalités ; il est confirmé avec vous sur WhatsApp avant le début du travail.",
+    q: "Les prix affichés sont-ils définitifs ?",
+    a: "Ce sont des tarifs de départ. Le prix final dépend du contenu et des fonctionnalités ; il est confirmé avec vous sur WhatsApp avant le début du travail.",
   },
   {
-    q: "Comment se passe le paiement ?",
+    q: "Comment se passe le paiement ?",
     a: "Le paiement se fait par BaridiMob. Les étapes de paiement sont fixées ensemble avant de commencer.",
   },
   {
-    q: "Je n'ai pas de logo ni de photos. Est-ce un problème ?",
+    q: "Je n'ai pas de logo ni de photos. Est-ce un problème ?",
     a: "Non. Ajoutez le service Logo et identité, et on vous aide à préparer les textes et les photos de votre site.",
   },
   {
-    q: "Mon site sera-t-il adapté au téléphone ?",
+    q: "Pour un rapport PFE, qu'est-ce que je dois envoyer ?",
+    a: "Votre rapport au format Word et le guide de mise en forme de votre université s'il existe. Vous recevez un fichier Word propre et un PDF prêt à imprimer.",
+  },
+  {
+    q: "Mon site sera-t-il adapté au téléphone ?",
     a: "Oui. Chaque site est conçu d'abord pour le téléphone, puis adapté à l'ordinateur.",
   },
   {

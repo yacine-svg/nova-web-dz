@@ -20,7 +20,7 @@ export type Totals = {
 
 export function computeTotals(selectedIds: string[], addonIds: string[]): Totals {
   const items = services.filter((s) => selectedIds.includes(s.id));
-  const addonsAvailable = items.some((s) => s.category === "web" || s.category === "app");
+  const addonsAvailable = items.some((s) => s.category === "web");
   const addonItems = addonsAvailable ? addons.filter((a) => addonIds.includes(a.id)) : [];
 
   const oneTime =

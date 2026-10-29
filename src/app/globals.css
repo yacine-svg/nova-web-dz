@@ -4,12 +4,13 @@
    Tokens
    ============================================================ */
 :root {
-  --ultra: #1a2280;      /* wallpaper base: deep ultramarine */
-  --ink: #0d1150;        /* depth at the bottom of the page */
-  --pink: #ff5e9a;       /* nova pink */
-  --amber: #ffb13d;      /* sunrise amber */
-  --cyan: #46dfff;       /* ice cyan */
-  --violet: #7b5cff;
+  /* from the logo: indigo #4f46e5 to cyan #06b6d4, deepened so white text reads */
+  --ultra: #2622a3;      /* wallpaper base: deep logo indigo */
+  --ink: #0b1f6e;        /* depth */
+  --indigo: #4f46e5;     /* logo indigo */
+  --cyan: #22d3ee;       /* logo cyan, brightened for small accents */
+  --violet: #6d5cff;
+  --alert: #ffb4c8;      /* form errors */
   --wa: #25d366;         /* WhatsApp green, used only on WhatsApp actions */
 
   --text: #f6f7ff;
@@ -90,7 +91,7 @@ button {
 }
 
 ::selection {
-  background: rgba(70, 223, 255, 0.35);
+  background: rgba(34, 211, 238, 0.35);
 }
 
 .sr-only {
@@ -142,44 +143,24 @@ html.sheet-open {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background:
-    radial-gradient(120% 80% at 50% 120%, var(--ink) 0%, transparent 60%),
-    linear-gradient(170deg, #1f2a9c 0%, var(--ultra) 45%, #141b6a 100%);
+  /* the logo's diagonal gradient, darker */
+  background: linear-gradient(135deg, #2a20a8 0%, #233bb6 38%, #1659ad 70%, #0b6f9b 100%);
   pointer-events: none;
 }
 
-.aurora__blob {
+/* two slow sheets of light sweeping across the gradient */
+.aurora__light {
   position: absolute;
-  width: 62vmax;
-  height: 62vmax;
-  border-radius: 50%;
-  opacity: 0.85;
+  inset: -40%;
   will-change: transform;
 }
-
-.aurora__blob--pink {
-  top: -22vmax;
-  left: -14vmax;
-  background: radial-gradient(circle, rgba(255, 94, 154, 0.75) 0%, rgba(255, 94, 154, 0) 62%);
-  animation: drift-a 38s ease-in-out infinite alternate;
+.aurora__light--a {
+  background: linear-gradient(115deg, transparent 30%, rgba(109, 92, 255, 0.4) 45%, transparent 60%);
+  animation: sweep-a 26s ease-in-out infinite alternate;
 }
-.aurora__blob--cyan {
-  top: 10vmax;
-  right: -22vmax;
-  background: radial-gradient(circle, rgba(70, 223, 255, 0.6) 0%, rgba(70, 223, 255, 0) 62%);
-  animation: drift-b 44s ease-in-out infinite alternate;
-}
-.aurora__blob--amber {
-  bottom: -30vmax;
-  left: 18vmax;
-  background: radial-gradient(circle, rgba(255, 177, 61, 0.55) 0%, rgba(255, 177, 61, 0) 60%);
-  animation: drift-c 50s ease-in-out infinite alternate;
-}
-.aurora__blob--violet {
-  top: 30vmax;
-  left: -24vmax;
-  background: radial-gradient(circle, rgba(123, 92, 255, 0.7) 0%, rgba(123, 92, 255, 0) 60%);
-  animation: drift-b 56s ease-in-out infinite alternate-reverse;
+.aurora__light--b {
+  background: linear-gradient(115deg, transparent 40%, rgba(34, 211, 238, 0.28) 55%, transparent 70%);
+  animation: sweep-b 34s ease-in-out infinite alternate;
 }
 
 /* fine dot grid: gives the glass something crisp to bend */
@@ -191,14 +172,13 @@ html.sheet-open {
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.35));
 }
 
-@keyframes drift-a {
-  to { transform: translate3d(18vmax, 12vmax, 0) scale(1.1); }
+@keyframes sweep-a {
+  from { transform: translate3d(-18%, -6%, 0); }
+  to { transform: translate3d(16%, 8%, 0); }
 }
-@keyframes drift-b {
-  to { transform: translate3d(-16vmax, 10vmax, 0) scale(0.92); }
-}
-@keyframes drift-c {
-  to { transform: translate3d(-10vmax, -14vmax, 0) scale(1.12); }
+@keyframes sweep-b {
+  from { transform: translate3d(14%, 10%, 0); }
+  to { transform: translate3d(-16%, -8%, 0); }
 }
 
 /* ============================================================
@@ -391,7 +371,9 @@ html.refract .glass--lens > .glass__fx {
 .nav__brand {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 10px;
+  white-space: nowrap;
   padding-right: 10px;
   font-weight: 700;
   font-size: 1.0625rem;
@@ -411,9 +393,12 @@ html.refract .glass--lens > .glass__fx {
   box-shadow: 0 4px 14px -4px rgba(6, 8, 52, 0.5);
   transition: transform 0.6s var(--spring), width 0.6s var(--spring), height 0.6s var(--spring);
 }
-.nav__logo svg {
-  filter: drop-shadow(0 0 8px rgba(255, 177, 61, 0.9));
-  color: #fff4dc;
+/* the logo badge sits inside the glass bubble, like a coin under glass */
+.nav__logo-mark {
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 .nav__brand:hover .nav__logo {
   transform: rotate(-12deg) scale(1.08);
@@ -507,8 +492,8 @@ html.refract .glass--lens > .glass__fx {
   font-size: 0.8125rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(180deg, #ff86b3, var(--pink));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 8px rgba(255, 94, 154, 0.5);
+  background: linear-gradient(135deg, var(--indigo), #06b6d4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 8px rgba(79, 70, 229, 0.5);
 }
 
 .nav__menu {
@@ -579,6 +564,15 @@ html.refract .glass--lens > .glass__fx {
 }
 
 @media (max-width: 420px) {
+  .nav__brand {
+    gap: 8px;
+    padding-right: 4px;
+    font-size: 1rem;
+  }
+  .nav__cta {
+    gap: 6px;
+    margin-left: 0;
+  }
   .nav__cta-label {
     display: none;
   }
@@ -586,7 +580,7 @@ html.refract .glass--lens > .glass__fx {
     display: inline;
   }
   .nav__cta {
-    padding: 0 16px;
+    padding: 0 13px;
   }
   .nav__logo {
     width: 44px;
@@ -606,7 +600,7 @@ html.refract .glass--lens > .glass__fx {
    ============================================================ */
 .hero {
   position: relative;
-  overflow-x: clip; /* drops may hang off the edge without widening the page */
+  overflow-x: clip; /* the headline lines slide sideways on the way out */
   min-height: 100svh;
   padding-top: calc(var(--nav-h) + 80px);
   padding-bottom: clamp(48px, 7vw, 96px);
@@ -646,63 +640,10 @@ html.refract .glass--lens > .glass__fx {
 }
 .hero__line--2 {
   padding-left: clamp(0px, 16vw, 300px);
-  color: #fff3df;
+  color: #c8f4ff;
 }
 .hero__line--3 {
   padding-left: clamp(0px, 6vw, 110px);
-}
-
-/* glass drops that sit over the headline and magnify it */
-.hero__orbs {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-.hero__orb-track {
-  position: absolute;
-}
-.hero__orb-track--1 {
-  top: clamp(130px, 18.5vw, 320px);
-  left: clamp(220px, 74vw, 1250px);
-}
-.hero__orb-track--2 {
-  top: clamp(20px, 1.5vw, 40px);
-  left: clamp(200px, 50vw, 860px);
-}
-.hero__orb-track--3 {
-  top: clamp(120px, 11.5vw, 210px);
-  left: clamp(16px, 5vw, 100px);
-}
-
-.hero__orb {
-  --radius: 50%;
-  --tint: rgba(255, 255, 255, 0);
-  border-radius: 50%;
-  box-shadow:
-    inset -6px -10px 22px rgba(255, 255, 255, 0.14),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 28px 50px -22px rgba(6, 8, 52, 0.55);
-}
-.hero__orb::before {
-  background:
-    radial-gradient(38% 30% at 32% 24%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%),
-    /* faint dispersion at the rim */
-    radial-gradient(closest-side, transparent 84%, rgba(70, 223, 255, 0.26) 92%, rgba(255, 94, 154, 0.22) 97%, transparent 100%),
-    radial-gradient(60% 60% at 70% 80%, rgba(70, 223, 255, 0.18) 0%, rgba(70, 223, 255, 0) 100%),
-    var(--tint);
-}
-.hero__orb-track--1 .hero__orb {
-  width: clamp(130px, 17vw, 300px);
-  aspect-ratio: 1;
-}
-.hero__orb-track--2 .hero__orb {
-  width: clamp(80px, 10vw, 180px);
-  aspect-ratio: 1;
-}
-.hero__orb-track--3 .hero__orb {
-  width: clamp(60px, 7vw, 120px);
-  aspect-ratio: 1;
 }
 
 .hero__foot {
@@ -712,14 +653,16 @@ html.refract .glass--lens > .glass__fx {
   grid-template-columns: minmax(0, 1.1fr) auto;
   grid-template-areas:
     "lead actions"
-    "facts actions";
+    "offers actions";
   align-items: end;
   gap: 20px 40px;
 }
 
-.hero__lead {
+.hero__lead-wrap {
   grid-area: lead;
-  max-width: 56ch;
+}
+.hero__lead {
+  max-width: 58ch;
   font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
   line-height: 1.5;
   color: var(--text-2);
@@ -727,32 +670,49 @@ html.refract .glass--lens > .glass__fx {
 
 .hero__actions {
   grid-area: actions;
+  align-self: end;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: flex-end;
 }
 
-.hero__facts {
-  grid-area: facts;
+/* the three offers from the Instagram bio; each opens the picker on that category */
+.hero__offers {
+  grid-area: offers;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 22px;
-  font-size: 0.9375rem;
-  color: var(--text-3);
+  gap: 10px;
 }
-.hero__facts li {
-  display: flex;
+.offer {
+  --radius: 999px;
+  --tint: rgba(255, 255, 255, 0.1);
+  display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 18px 0 8px;
+  border-radius: 999px;
+  font-size: 0.96875rem;
+  font-weight: 550;
+  transition: transform 0.5s var(--spring);
 }
-.hero__facts li::before {
-  content: "";
-  width: 7px;
-  height: 7px;
+.offer:hover {
+  transform: scale(1.04) translateY(-2px);
+}
+.offer:active {
+  transform: scale(0.95);
+  transition-duration: 0.12s;
+}
+.offer__emoji {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 10px var(--amber);
+  font-size: 1.05rem;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* portrait tablets: a full-screen hero leaves a hole in the middle */
@@ -768,7 +728,7 @@ html.refract .glass--lens > .glass__fx {
 @media (max-width: 860px) {
   .hero__foot {
     grid-template-columns: 1fr;
-    grid-template-areas: "lead" "actions" "facts";
+    grid-template-areas: "lead" "actions" "offers";
   }
   .hero__actions {
     justify-content: flex-start;
@@ -788,20 +748,8 @@ html.refract .glass--lens > .glass__fx {
   .hero__line--3 {
     padding-left: 0;
   }
-  .hero__orb-track--1 {
-    top: 178px;
-    left: auto;
-    right: -36px;
-  }
-  .hero__orb-track--1 .hero__orb {
-    width: 150px;
-  }
-  .hero__orb-track--2 {
-    top: 205px;
-    left: 26px;
-  }
-  .hero__orb-track--3 {
-    display: none;
+  .offer {
+    font-size: 0.9375rem;
   }
   .hero__actions .btn {
     flex: 1 1 auto;
@@ -830,6 +778,19 @@ html.refract .glass--lens > .glass__fx {
   font-variation-settings: "wdth" 85, "opsz" 72;
   line-height: 0.98;
   letter-spacing: -0.035em;
+}
+
+/* masked words for the title reveal (SplitTitle) */
+.sw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-block: 0.14em 0.08em;
+  margin-block: -0.14em -0.08em;
+}
+.sw__i {
+  display: inline-block;
+  transform-origin: 0 100%;
 }
 
 .section__lead {
@@ -861,11 +822,6 @@ html.refract .glass--lens > .glass__fx {
   padding: 5px;
   border-radius: 999px;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.seg::-webkit-scrollbar {
-  display: none;
 }
 .seg__inner {
   position: relative;
@@ -903,6 +859,26 @@ html.refract .glass--lens > .glass__fx {
   pointer-events: none;
 }
 
+/* phones: no sideways scrolling, the four filters sit in a 2 x 2 bubble and the droplet moves in both directions */
+@media (max-width: 640px) {
+  .services__head > .seg {
+    width: 100%;
+  }
+  .seg {
+    --radius: 28px;
+    border-radius: 28px;
+  }
+  .seg__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+  .seg__btn {
+    padding: 0 10px;
+    font-size: 0.90625rem;
+  }
+}
+
 .services__layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(330px, 26vw, 400px);
@@ -931,6 +907,9 @@ html.refract .glass--lens > .glass__fx {
 }
 .tile--lg {
   grid-column: span 3;
+}
+.tile[hidden] {
+  display: none;
 }
 .tile:hover {
   --tint: rgba(255, 255, 255, 0.11);
@@ -1089,7 +1068,7 @@ html.refract .glass--lens > .glass__fx {
   transition: background 0.2s ease, transform 0.4s var(--spring);
 }
 .summary__remove:hover {
-  background: rgba(255, 94, 154, 0.5);
+  background: rgba(255, 110, 150, 0.55);
   color: #fff;
   transform: scale(1.1);
 }
@@ -1286,10 +1265,10 @@ html.refract .glass--lens > .glass__fx {
   flex-direction: column;
   gap: 10px;
 }
-/* the line that links the step bubbles */
-.steps__item:not(:last-child)::after {
-  content: "";
+/* the line that links the step bubbles; ScrollFX draws it with the scroll */
+.steps__line {
   position: absolute;
+  transform-origin: 0 50%;
   top: 32px;
   left: 76px;
   right: calc(clamp(20px, 2.4vw, 36px) * -1 + 8px);
@@ -1325,7 +1304,7 @@ html.refract .glass--lens > .glass__fx {
     grid-template-columns: 1fr 1fr;
     row-gap: 40px;
   }
-  .steps__item::after {
+  .steps__line {
     display: none;
   }
 }
@@ -1343,8 +1322,18 @@ html.refract .glass--lens > .glass__fx {
   flex-direction: column;
   border-top: 1px solid var(--line);
 }
-.examples__list li {
-  border-bottom: 1px solid var(--line);
+.examples__item {
+  position: relative;
+}
+/* the rule under each row, drawn in by ScrollFX */
+.examples__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+  transform-origin: 0 50%;
 }
 .examples__row {
   display: grid;
@@ -1421,8 +1410,6 @@ html.refract .glass--lens > .glass__fx {
   align-items: start;
 }
 .faq__head {
-  position: sticky;
-  top: calc(var(--nav-h) + 40px);
   align-items: flex-start;
 }
 .faq__head .btn {
@@ -1483,9 +1470,6 @@ html.refract .glass--lens > .glass__fx {
   .faq__layout {
     grid-template-columns: 1fr;
   }
-  .faq__head {
-    position: static;
-  }
 }
 
 /* ============================================================
@@ -1513,8 +1497,9 @@ html.refract .glass--lens > .glass__fx {
   font-size: 1.125rem;
 }
 .footer__brand svg {
-  color: #fff4dc;
-  filter: drop-shadow(0 0 6px rgba(255, 177, 61, 0.9));
+  flex: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px -4px rgba(6, 8, 52, 0.6);
 }
 .footer__links {
   display: flex;
@@ -1696,11 +1681,11 @@ html.refract .glass--lens > .glass__fx {
   box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), 0 0 0 2px var(--cyan);
 }
 .field input[aria-invalid="true"] {
-  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), 0 0 0 2px var(--pink);
+  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), 0 0 0 2px var(--alert);
 }
 .field__error {
   font-size: 0.875rem;
-  color: #ffc2d8;
+  color: var(--alert);
 }
 .form .btn--whatsapp {
   margin-top: 6px;
@@ -1740,12 +1725,19 @@ html.refract .glass--lens > .glass__fx {
    Reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .aurora__blob {
+  .aurora__light {
     animation: none;
   }
   *,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* very small phones: the logo alone carries the brand */
+@media (max-width: 340px) {
+  .nav__name {
+    display: none;
   }
 }

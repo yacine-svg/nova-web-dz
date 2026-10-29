@@ -7,6 +7,7 @@ import Examples from "@/components/Examples";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
 import OrderSheet from "@/components/OrderSheet";
+import ScrollFX from "@/components/ScrollFX";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       </main>
       <Footer />
       <OrderSheet />
+      <ScrollFX />
     </SelectionProvider>
   );
 }

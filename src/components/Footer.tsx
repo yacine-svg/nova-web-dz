@@ -1,6 +1,6 @@
 import { site } from "@/config/site";
 import { whatsappLink } from "@/lib/whatsapp";
-import { InstagramIcon, NovaMark, WhatsAppIcon } from "./Icons";
+import { InstagramIcon, NovaLogo, WhatsAppIcon } from "./Icons";
 
 export default function Footer() {
   return (
@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer__bar glass glass--edge">
           <span className="glass__fx" aria-hidden="true" />
           <span className="footer__brand">
-            <NovaMark size={18} />
+            <NovaLogo size={34} gradientId="nova-logo-footer" />
             Nova Web Dz
           </span>
           <span className="footer__links">

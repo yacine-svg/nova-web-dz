@@ -250,7 +250,7 @@ export default function OrderSheet() {
                   <textarea
                     id="f-note"
                     rows={2}
-                    placeholder="Ex. Salon de coiffure à Alger, je veux montrer mes prix et prendre des rendez-vous"
+                    placeholder="Ex. Salon de coiffure à Alger, je veux montrer mes prix"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                   />

@@ -13,19 +13,20 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Nova Web Dz | Sites web, applications et design en Algérie",
+  metadataBase: new URL("https://nova-web-dz.vercel.app"),
+  title: "Nova Web Dz | Sites web, design et rapports PFE en Algérie",
   description:
-    "Choisissez votre site web, application ou design, voyez le prix en dinars et envoyez votre demande sur WhatsApp. Nova Web Dz, Algérie.",
+    "Sites web et systèmes sur mesure, logos, présentations, montage vidéo et mise en page de rapports PFE. Prix en DA, demande sur WhatsApp. Nova Web Dz, Algérie.",
   openGraph: {
     title: "Nova Web Dz",
-    description: "Sites web, applications et design pour les entreprises en Algérie. Prix en DA, demande sur WhatsApp.",
+    description: "Sites web & systèmes sur mesure, logos, présentations, montage, rapports PFE. Prix en DA, demande sur WhatsApp.",
     locale: "fr_DZ",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a2280",
+  themeColor: "#2a2aa8",
   width: "device-width",
   initialScale: 1,
 };
