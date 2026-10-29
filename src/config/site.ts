@@ -6,7 +6,7 @@
 export const site = {
   name: "Nova Web Dz",
   /** International format, digits only. Set NEXT_PUBLIC_WHATSAPP_NUMBER on Vercel, or replace the fallback. */
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "213XXXXXXXXX",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "213561913869",
   instagramUrl: "https://www.instagram.com/nova_webdz",
   instagramHandle: "@nova_webdz",
 };
