@@ -21,7 +21,7 @@ export default function Examples() {
                 <span className="examples__label">{d.label}</span>
                 <span className="examples__url">{d.url.replace("https://", "")}</span>
                 <span className="examples__go-pop" aria-hidden="true">
-                  <span className="examples__go glass">
+                  <span className="examples__go glass glass--lens">
                     <span className="glass__fx" />
                     <ArrowUpRightIcon />
                   </span>

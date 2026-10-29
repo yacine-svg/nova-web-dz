@@ -40,7 +40,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: var(--ultra);
+  background: #0b1236;
 }
 
 body {
@@ -143,8 +143,11 @@ html.sheet-open {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  /* the logo's diagonal gradient, darker */
-  background: linear-gradient(135deg, #2a20a8 0%, #233bb6 38%, #1659ad 70%, #0b6f9b 100%);
+  /* deep ink; the logo's indigo and cyan only arrive as light */
+  background:
+    radial-gradient(90% 70% at 10% 0%, rgba(79, 70, 229, 0.55) 0%, transparent 60%),
+    radial-gradient(80% 70% at 100% 100%, rgba(6, 182, 212, 0.4) 0%, transparent 60%),
+    linear-gradient(160deg, #0d0d33 0%, #0a1338 50%, #071d33 100%);
   pointer-events: none;
 }
 
@@ -155,11 +158,11 @@ html.sheet-open {
   will-change: transform;
 }
 .aurora__light--a {
-  background: linear-gradient(115deg, transparent 30%, rgba(109, 92, 255, 0.4) 45%, transparent 60%);
+  background: linear-gradient(115deg, transparent 32%, rgba(109, 92, 255, 0.42) 45%, transparent 58%);
   animation: sweep-a 26s ease-in-out infinite alternate;
 }
 .aurora__light--b {
-  background: linear-gradient(115deg, transparent 40%, rgba(34, 211, 238, 0.28) 55%, transparent 70%);
+  background: linear-gradient(115deg, transparent 42%, rgba(34, 211, 238, 0.32) 54%, transparent 66%);
   animation: sweep-b 34s ease-in-out infinite alternate;
 }
 
@@ -167,7 +170,7 @@ html.sheet-open {
 .aurora__dots {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1.4px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1.4px);
   background-size: 26px 26px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.35));
 }
@@ -190,15 +193,16 @@ html.sheet-open {
    ::after          rim light (above content, pointer-events none)
 */
 .glass {
-  --tint: rgba(255, 255, 255, 0.1);
-  --blur: 14px;
+  /* clear by default: a whisper of white, the edges do the talking */
+  --tint: rgba(255, 255, 255, 0.045);
+  --blur: 9px;
   --radius: 28px;
   position: relative;
   isolation: isolate;
   border-radius: var(--radius);
   box-shadow:
-    0 10px 30px -8px rgba(6, 8, 52, 0.55),
-    0 2px 6px -2px rgba(6, 8, 52, 0.35);
+    0 18px 40px -14px rgba(2, 4, 24, 0.65),
+    0 2px 8px -2px rgba(2, 4, 24, 0.4);
 }
 
 .glass__fx {
@@ -206,8 +210,9 @@ html.sheet-open {
   inset: 0;
   z-index: -2;
   border-radius: inherit;
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(185%) brightness(1.06);
-  backdrop-filter: blur(var(--blur)) saturate(185%) brightness(1.06);
+  /* light frost, almost no colour boost: glass shows what is behind it, it doesn't turn it blue */
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(115%) brightness(1.08);
+  backdrop-filter: blur(var(--blur)) saturate(115%) brightness(1.08);
   pointer-events: none;
 }
 
@@ -218,7 +223,8 @@ html.sheet-open {
   z-index: -1;
   border-radius: inherit;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 46%),
+    /* specular sheen across the top-left, a softer catch at the bottom-right */
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 32%, rgba(255, 255, 255, 0) 58%, rgba(255, 255, 255, 0.06) 100%),
     var(--tint);
   pointer-events: none;
 }
@@ -230,11 +236,13 @@ html.sheet-open {
   z-index: 3;
   border-radius: inherit;
   pointer-events: none;
+  /* rim light: bright where the light hits, thin hairline all round, thickness glow inside */
   box-shadow:
-    inset 1.5px 1.5px 0.5px -0.5px rgba(255, 255, 255, 0.75),
-    inset -1px -1px 0.5px -0.5px rgba(255, 255, 255, 0.45),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 0 22px rgba(255, 255, 255, 0.08);
+    inset 1.5px 1.5px 0.5px -0.5px rgba(255, 255, 255, 0.9),
+    inset -1.5px -1.5px 0.5px -0.5px rgba(255, 255, 255, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    inset 0 14px 22px -16px rgba(255, 255, 255, 0.35),
+    inset 0 -14px 22px -16px rgba(255, 255, 255, 0.18);
 }
 
 /* Chromium: real refraction */
@@ -260,7 +268,7 @@ html.refract .glass--lens > .glass__fx {
 
 @media (prefers-reduced-transparency: reduce) {
   .glass::before {
-    background: rgba(26, 34, 128, 0.94);
+    background: rgba(18, 24, 70, 0.95);
   }
 }
 
@@ -903,7 +911,7 @@ html.refract .glass--lens > .glass__fx {
 
 .tile {
   --radius: 30px;
-  --tint: rgba(255, 255, 255, 0.07);
+  --tint: rgba(255, 255, 255, 0.04);
   grid-column: span 2;
   display: flex;
   flex-direction: column;
@@ -921,13 +929,14 @@ html.refract .glass--lens > .glass__fx {
   display: none;
 }
 .tile:hover {
-  --tint: rgba(255, 255, 255, 0.11);
+  --tint: rgba(255, 255, 255, 0.08);
 }
 .tile.is-on {
-  --tint: rgba(255, 255, 255, 0.2);
+  --tint: rgba(255, 255, 255, 0.12);
   box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.75),
-    0 16px 40px -10px rgba(6, 8, 52, 0.7);
+    0 0 0 1.5px rgba(255, 255, 255, 0.85),
+    0 0 34px -6px rgba(34, 211, 238, 0.55),
+    0 18px 40px -14px rgba(2, 4, 24, 0.7);
 }
 .tile:focus-visible {
   outline-offset: 4px;
@@ -1563,14 +1572,14 @@ html.refract .glass--lens > .glass__fx {
 .sheet__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(8, 10, 60, 0.45);
+  background: rgba(4, 6, 28, 0.5);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 .sheet__panel {
   --radius: 36px;
-  --tint: rgba(40, 50, 170, 0.42);
-  --blur: 26px;
+  --tint: rgba(14, 18, 60, 0.45);
+  --blur: 24px;
   position: relative;
   width: min(100%, 560px);
   max-height: min(92svh, 860px);

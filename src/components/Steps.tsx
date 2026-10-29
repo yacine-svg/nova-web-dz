@@ -15,7 +15,7 @@ export default function Steps() {
           {steps.map((s, i) => (
             <li key={s.title} className="steps__item">
               {i < steps.length - 1 && <span className="steps__line" aria-hidden="true" />}
-              <span className="steps__num glass" aria-hidden="true">
+              <span className="steps__num glass glass--lens" aria-hidden="true">
                 <span className="glass__fx" />
                 {i + 1}
               </span>

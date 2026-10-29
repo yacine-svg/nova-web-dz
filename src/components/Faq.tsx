@@ -21,7 +21,7 @@ export default function Faq() {
         </div>
         <div className="faq__list">
           {faq.map((item) => (
-            <details key={item.q} className="faq__item glass">
+            <details key={item.q} className="faq__item glass glass--edge">
               <span className="glass__fx" aria-hidden="true" />
               <summary>
                 <span>{item.q}</span>

@@ -95,7 +95,7 @@ export default function Services() {
                   key={s.id}
                   type="button"
                   hidden={!shown}
-                  className={`tile glass tile--${s.size} ${on ? "is-on" : ""}`}
+                  className={`tile glass glass--edge tile--${s.size} ${on ? "is-on" : ""}`}
                   aria-pressed={on}
                   onClick={onTile(s.id)}
                 >
