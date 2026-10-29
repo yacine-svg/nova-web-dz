@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
  *  glass cards          pop in like drops, shrink away when they leave
  *
  * Glass elements are only moved and scaled, never faded: below opacity 1 a browser drops their blur.
+ * Never animate an element whose CSS has `transition: transform` (hover effects): animate a wrapper instead.
  */
 export default function ScrollFX() {
   useEffect(() => {
@@ -161,7 +162,7 @@ export default function ScrollFX() {
               0.1,
             )
             .from(item.querySelectorAll(".examples__label, .examples__url"), { y: 24, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.25)
-            .from(item.querySelector(".examples__go"), { scale: 0, rotation: -140, duration: 1, ease: "elastic.out(1, 0.6)" }, 0.3);
+            .from(item.querySelector(".examples__go-pop"), { scale: 0, rotation: -140, duration: 1, ease: "elastic.out(1, 0.6)" }, 0.3);
         });
       },
     );

@@ -20,9 +20,11 @@ export default function Examples() {
                 <span className="examples__name">{d.name}</span>
                 <span className="examples__label">{d.label}</span>
                 <span className="examples__url">{d.url.replace("https://", "")}</span>
-                <span className="examples__go glass" aria-hidden="true">
-                  <span className="glass__fx" />
-                  <ArrowUpRightIcon />
+                <span className="examples__go-pop" aria-hidden="true">
+                  <span className="examples__go glass">
+                    <span className="glass__fx" />
+                    <ArrowUpRightIcon />
+                  </span>
                 </span>
                 <span className="sr-only"> (ouvre un nouvel onglet)</span>
               </a>

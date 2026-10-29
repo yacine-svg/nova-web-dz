@@ -25,8 +25,9 @@ export default function Hero() {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
       tl.from(".hero__line-inner", { yPercent: 118, rotation: 4, duration: 1.2, stagger: 0.11 })
         .from(".hero__lead", { y: 40, opacity: 0, filter: "blur(10px)", duration: 1 }, 0.55)
-        .from(".hero__actions .btn", { scale: 0.5, y: 30, duration: 1.2, stagger: 0.1, ease: "elastic.out(1, 0.6)" }, 0.7)
-        .from(".offer", { scale: 0.4, y: 40, duration: 1.2, stagger: 0.09, ease: "elastic.out(1, 0.65)" }, 0.8);
+        // wrappers, not the buttons: the buttons have a CSS hover transition on transform that would fight GSAP
+        .from(".hero__actions .pop", { scale: 0.5, y: 30, duration: 1.2, stagger: 0.1, ease: "elastic.out(1, 0.6)" }, 0.7)
+        .from(".hero__offers > li", { scale: 0.4, y: 40, duration: 1.2, stagger: 0.09, ease: "elastic.out(1, 0.65)" }, 0.8);
 
       // Out: the three lines slide apart and the rest drifts up as you scroll away
       const out = gsap.timeline({
@@ -73,13 +74,17 @@ export default function Hero() {
             </p>
           </div>
           <div className="hero__actions">
-            <button type="button" className="btn btn--primary" onClick={() => scrollToId("services")}>
-              Composer mon projet
-            </button>
-            <button type="button" className="btn btn--glass glass" onClick={() => scrollToId("exemples")}>
-              <Fx />
-              Voir des exemples
-            </button>
+            <span className="pop">
+              <button type="button" className="btn btn--primary" onClick={() => scrollToId("services")}>
+                Composer mon projet
+              </button>
+            </span>
+            <span className="pop">
+              <button type="button" className="btn btn--glass glass" onClick={() => scrollToId("exemples")}>
+                <Fx />
+                Voir des exemples
+              </button>
+            </span>
           </div>
           <ul className="hero__offers" aria-label="Ce que fait Nova Web Dz">
             {offers.map((o) => (

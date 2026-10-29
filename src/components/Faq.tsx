@@ -12,10 +12,12 @@ export default function Faq() {
           <p className="section__lead" data-fx="fade">
             Une autre question avant de choisir&nbsp;? Posez-la directement.
           </p>
-          <a className="btn btn--whatsapp" data-fx="fade" data-fx-delay="0.1" href={whatsappLink(site.whatsapp)} target="_blank" rel="noopener noreferrer">
-            <WhatsAppIcon />
-            Écrire sur WhatsApp
-          </a>
+          <div className="faq__cta" data-fx="fade" data-fx-delay="0.1">
+            <a className="btn btn--whatsapp" href={whatsappLink(site.whatsapp)} target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon />
+              Écrire sur WhatsApp
+            </a>
+          </div>
         </div>
         <div className="faq__list">
           {faq.map((item) => (
