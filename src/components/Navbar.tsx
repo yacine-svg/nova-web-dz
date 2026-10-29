@@ -107,7 +107,7 @@ export default function Navbar() {
 
   return (
     <header className={`nav ${scrolled ? "is-scrolled" : ""}`}>
-      <div className="nav__bar glass glass--edge">
+      <div className="nav__bar glass">
         <Fx />
         <a href="#top" className="nav__brand" onClick={go("top")} aria-label="Nova Web Dz, retour en haut">
           <span className="nav__logo glass">
@@ -173,7 +173,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      <div id="menu-mobile" className="nav__sheet glass glass--edge" ref={sheetRef} aria-hidden={!menuOpen}>
+      <div id="menu-mobile" className="nav__sheet glass" ref={sheetRef} aria-hidden={!menuOpen}>
         <Fx />
         {navLinks.map((l) => (
           <a key={l.id} href={`#${l.id}`} className="nav__sheet-link" onClick={go(l.id)} tabIndex={menuOpen ? 0 : -1}>

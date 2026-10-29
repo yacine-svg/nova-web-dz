@@ -89,7 +89,7 @@ export default function Hero() {
           <ul className="hero__offers" aria-label="Ce que fait Nova Web Dz">
             {offers.map((o) => (
               <li key={o.category}>
-                <button type="button" className="offer glass glass--edge" onClick={() => pick(o.category)}>
+                <button type="button" className="offer glass" onClick={() => pick(o.category)}>
                   <Fx />
                   <span className="offer__emoji" aria-hidden="true">
                     {o.emoji}

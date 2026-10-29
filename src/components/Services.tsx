@@ -126,7 +126,7 @@ export default function Services() {
             })}
           </div>
 
-          <aside className="summary glass glass--edge" aria-label="Votre sélection">
+          <aside className="summary glass" aria-label="Votre sélection">
             <Fx />
             <h3 className="summary__title">Votre sélection</h3>
             <div aria-live="polite">
@@ -174,7 +174,7 @@ export default function Services() {
 
       {/* Phone: floating bubble with the total */}
       <div className={`mbar ${count > 0 ? "is-on" : ""}`} aria-hidden={count === 0}>
-        <div className="mbar__pill glass glass--edge">
+        <div className="mbar__pill glass">
           <Fx />
           <span className="mbar__info">
             <span className="mbar__count">

@@ -16,6 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
  *
  * Glass elements are only moved and scaled, never faded: below opacity 1 a browser drops their blur.
  * Never animate an element whose CSS has `transition: transform` (hover effects): animate a wrapper instead.
+ * Keep SVG refraction (glass--edge) off large panels that move while scrolling: it costs frames.
+ * Small droplets (glass--lens) are cheap.
  */
 export default function ScrollFX() {
   useEffect(() => {

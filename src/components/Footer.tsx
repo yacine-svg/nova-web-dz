@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div className="footer__bar glass glass--edge">
+        <div className="footer__bar glass">
           <span className="glass__fx" aria-hidden="true" />
           <span className="footer__brand">
             <NovaLogo size={34} gradientId="nova-logo-footer" />
