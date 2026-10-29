@@ -3,6 +3,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import Background from "@/components/Background";
 import LiquidFilters from "@/components/LiquidFilters";
 import SmoothScroll from "@/components/SmoothScroll";
+import { themeBootScript } from "@/lib/themeBoot";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -26,14 +27,20 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1236",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e9edf2" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0e14" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={bricolage.variable}>
+    <html lang="fr" className={bricolage.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         <LiquidFilters />
         <Background />

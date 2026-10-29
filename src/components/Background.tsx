@@ -1,9 +1,10 @@
-/** The "wallpaper" the glass sits on: the logo's gradient, two slow sheets of light, and a fine dot grid the glass can visibly bend */
+/** The wallpaper the glass sits on: a calm gradient, two soft out-of-focus shapes, a faint brand glow and a fine grid the glass can bend */
 export default function Background() {
   return (
     <div className="aurora" aria-hidden="true">
-      <span className="aurora__light aurora__light--a" />
-      <span className="aurora__light aurora__light--b" />
+      <span className="aurora__glow" />
+      <span className="aurora__shape aurora__shape--1" />
+      <span className="aurora__shape aurora__shape--2" />
       <span className="aurora__dots" />
     </div>
   );

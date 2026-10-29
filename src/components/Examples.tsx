@@ -5,7 +5,7 @@ import SplitTitle from "./SplitTitle";
 export default function Examples() {
   return (
     <section id="exemples" className="section examples">
-      <div className="wrap" data-fx="section">
+      <div className="wrap">
         <div className="section__head">
           <SplitTitle className="section__title" text="Des sites déjà en ligne" />
           <p className="section__lead" data-fx="fade">

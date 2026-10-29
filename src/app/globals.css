@@ -2,31 +2,139 @@
 
 /* ============================================================
    Tokens
+   Minimal liquid glass: neutral frosted panels, white rims, soft shadows.
+   The only colour is the logo. Light by default, dark follows the phone
+   (or the toggle in the navbar, stored as data-theme on <html>).
    ============================================================ */
 :root {
-  /* from the logo: indigo #4f46e5 to cyan #06b6d4, deepened so white text reads */
-  --ultra: #2622a3;      /* wallpaper base: deep logo indigo */
-  --ink: #0b1f6e;        /* depth */
-  --indigo: #4f46e5;     /* logo indigo */
-  --cyan: #22d3ee;       /* logo cyan, brightened for small accents */
-  --violet: #6d5cff;
-  --alert: #ffb4c8;      /* form errors */
-  --wa: #25d366;         /* WhatsApp green, used only on WhatsApp actions */
-
-  --text: #f6f7ff;
-  --text-2: rgba(240, 243, 255, 0.78);
-  --text-3: rgba(240, 243, 255, 0.58);
-  --line: rgba(255, 255, 255, 0.16);
-
   --font: var(--font-bricolage), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
 
   --gutter: clamp(16px, 4vw, 56px);
   --maxw: 1560px;
   --nav-h: 64px;
 
-  /* springy easing for CSS transitions */
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --logo: linear-gradient(135deg, #4f46e5, #06b6d4);
+  --blur-r: 20px; /* frost radius; lower = cheaper to render */
+  --focus: #4f46e5;
+  --wa: #25d366;
+
+  /* light */
+  color-scheme: light;
+  --bg: #e9edf2;
+  --bg-deep: #d9e0e8;
+  --text: #141a24;
+  --text-2: rgba(20, 26, 36, 0.7);
+  --text-3: rgba(20, 26, 36, 0.5);
+  --line: rgba(20, 26, 36, 0.1);
+  --dot: rgba(20, 26, 36, 0.32);
+
+  --glass-tint: rgba(255, 255, 255, 0.38);
+  --glass-tint-hi: rgba(255, 255, 255, 0.62);
+  --sat: 130%;
+  --bright: 1.04;
+  --rim-hi: rgba(255, 255, 255, 0.95);
+  --rim-lo: rgba(255, 255, 255, 0.6);
+  --rim-hair: rgba(255, 255, 255, 0.75);
+  --sheen: rgba(255, 255, 255, 0.5);
+  --shadow: 0 22px 44px -22px rgba(40, 52, 80, 0.32), 0 2px 8px -3px rgba(40, 52, 80, 0.12);
+  --shadow-sm: 0 6px 16px -8px rgba(40, 52, 80, 0.35);
+
+  --raise: rgba(255, 255, 255, 0.5);
+  --raise-2: rgba(255, 255, 255, 0.85);
+  --raise-line: rgba(20, 26, 36, 0.07);
+  --inset: inset 0 1px 2px rgba(40, 52, 80, 0.12), inset 0 0 0 1px rgba(20, 26, 36, 0.07);
+
+  --solid: #141a24;      /* primary button, selected check */
+  --on-solid: #ffffff;
+  --overlay: rgba(200, 208, 220, 0.4);
+  --sheet-tint: rgba(255, 255, 255, 0.55);
+  --alert: #c2254f;
+
+  /* soft out-of-focus shapes behind the glass */
+  --shape-1: radial-gradient(circle at 32% 28%, #ffffff 0%, #f1f4f8 30%, #cfd8e3 68%, #bcc8d6 100%);
+  --shape-2: radial-gradient(circle at 30% 26%, #ffffff 0%, #e8edf3 36%, #c6d0dc 74%, #b3c0cf 100%);
+  --shape-glow: radial-gradient(closest-side, rgba(79, 70, 229, 0.18), transparent);
+  --grid: rgba(20, 26, 36, 0.09);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0b0e14;
+    --bg-deep: #05070b;
+    --text: #f1f4f8;
+    --text-2: rgba(241, 244, 248, 0.72);
+    --text-3: rgba(241, 244, 248, 0.5);
+    --line: rgba(255, 255, 255, 0.1);
+    --dot: rgba(255, 255, 255, 0.4);
+
+    --glass-tint: rgba(255, 255, 255, 0.05);
+    --glass-tint-hi: rgba(255, 255, 255, 0.11);
+    --sat: 120%;
+    --bright: 1.1;
+    --rim-hi: rgba(255, 255, 255, 0.5);
+    --rim-lo: rgba(255, 255, 255, 0.16);
+    --rim-hair: rgba(255, 255, 255, 0.1);
+    --sheen: rgba(255, 255, 255, 0.12);
+    --shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.75), 0 2px 8px -3px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 6px 16px -8px rgba(0, 0, 0, 0.7);
+
+    --raise: rgba(255, 255, 255, 0.06);
+    --raise-2: rgba(255, 255, 255, 0.14);
+    --raise-line: rgba(255, 255, 255, 0.08);
+    --inset: inset 0 1px 2px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    --solid: #f1f4f8;
+    --on-solid: #0b0e14;
+    --overlay: rgba(3, 4, 8, 0.55);
+    --sheet-tint: rgba(18, 22, 30, 0.6);
+    --alert: #ffb4c8;
+
+    --shape-1: radial-gradient(circle at 32% 28%, #3a4250 0%, #20252e 34%, #12151b 70%, #0b0e13 100%);
+    --shape-2: radial-gradient(circle at 30% 26%, #333b48 0%, #1b2028 38%, #101318 74%, #0a0c10 100%);
+    --shape-glow: radial-gradient(closest-side, rgba(79, 70, 229, 0.22), transparent);
+    --grid: rgba(255, 255, 255, 0.06);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0e14;
+  --bg-deep: #05070b;
+  --text: #f1f4f8;
+  --text-2: rgba(241, 244, 248, 0.72);
+  --text-3: rgba(241, 244, 248, 0.5);
+  --line: rgba(255, 255, 255, 0.1);
+  --dot: rgba(255, 255, 255, 0.4);
+
+  --glass-tint: rgba(255, 255, 255, 0.05);
+  --glass-tint-hi: rgba(255, 255, 255, 0.11);
+  --sat: 120%;
+  --bright: 1.1;
+  --rim-hi: rgba(255, 255, 255, 0.5);
+  --rim-lo: rgba(255, 255, 255, 0.16);
+  --rim-hair: rgba(255, 255, 255, 0.1);
+  --sheen: rgba(255, 255, 255, 0.12);
+  --shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.75), 0 2px 8px -3px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 6px 16px -8px rgba(0, 0, 0, 0.7);
+
+  --raise: rgba(255, 255, 255, 0.06);
+  --raise-2: rgba(255, 255, 255, 0.14);
+  --raise-line: rgba(255, 255, 255, 0.08);
+  --inset: inset 0 1px 2px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  --solid: #f1f4f8;
+  --on-solid: #0b0e14;
+  --overlay: rgba(3, 4, 8, 0.55);
+  --sheet-tint: rgba(18, 22, 30, 0.6);
+  --alert: #ffb4c8;
+
+  --shape-1: radial-gradient(circle at 32% 28%, #3a4250 0%, #20252e 34%, #12151b 70%, #0b0e13 100%);
+  --shape-2: radial-gradient(circle at 30% 26%, #333b48 0%, #1b2028 38%, #101318 74%, #0a0c10 100%);
+  --shape-glow: radial-gradient(closest-side, rgba(79, 70, 229, 0.22), transparent);
+  --grid: rgba(255, 255, 255, 0.06);
 }
 
 /* ============================================================
@@ -40,7 +148,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: #0b1236;
+  background: var(--bg);
 }
 
 body {
@@ -48,13 +156,15 @@ body {
   min-height: 100svh;
   font-family: var(--font);
   font-size: 1.0625rem;
+  font-weight: 400;
   line-height: 1.55;
   color: var(--text);
-  background: transparent; /* the fixed aurora wallpaper shows through */
+  background: transparent; /* the fixed wallpaper shows through */
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+  transition: color 0.4s ease;
 }
 
 h1, h2, h3, p, ul, ol, figure, fieldset {
@@ -86,12 +196,12 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.35);
+  background: rgba(79, 70, 229, 0.25);
 }
 
 .sr-only {
@@ -136,73 +246,80 @@ html.sheet-open {
 }
 
 /* ============================================================
-   Wallpaper
+   Wallpaper: calm gradient, soft out-of-focus shapes, a faint grid
    ============================================================ */
 .aurora {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  /* deep ink; the logo's indigo and cyan only arrive as light */
-  background:
-    radial-gradient(90% 70% at 10% 0%, rgba(79, 70, 229, 0.55) 0%, transparent 60%),
-    radial-gradient(80% 70% at 100% 100%, rgba(6, 182, 212, 0.4) 0%, transparent 60%),
-    linear-gradient(160deg, #0d0d33 0%, #0a1338 50%, #071d33 100%);
+  background: linear-gradient(170deg, var(--bg) 0%, var(--bg) 40%, var(--bg-deep) 100%);
   pointer-events: none;
+  transition: background 0.5s ease;
 }
 
-/* two slow sheets of light sweeping across the gradient */
-.aurora__light {
+/* static on purpose: anything moving behind the glass makes every panel re-blur on every frame */
+.aurora__shape {
   position: absolute;
-  inset: -40%;
-  will-change: transform;
+  border-radius: 50%;
 }
-.aurora__light--a {
-  background: linear-gradient(115deg, transparent 32%, rgba(109, 92, 255, 0.42) 45%, transparent 58%);
-  animation: sweep-a 26s ease-in-out infinite alternate;
+.aurora__shape--1 {
+  width: 46vmax;
+  height: 46vmax;
+  top: -16vmax;
+  right: -12vmax;
+  background: var(--shape-1);
+  mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
 }
-.aurora__light--b {
-  background: linear-gradient(115deg, transparent 42%, rgba(34, 211, 238, 0.32) 54%, transparent 66%);
-  animation: sweep-b 34s ease-in-out infinite alternate;
+.aurora__shape--2 {
+  width: 34vmax;
+  height: 34vmax;
+  bottom: -14vmax;
+  left: -10vmax;
+  background: var(--shape-2);
+  mask-image: radial-gradient(closest-side, #000 74%, transparent 100%);
+}
+/* the one trace of the brand colour in the wallpaper */
+.aurora__glow {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  left: 20%;
+  top: 30%;
+  background: var(--shape-glow);
 }
 
-/* fine dot grid: gives the glass something crisp to bend */
+/* fine grid: gives the glass something crisp to bend */
 .aurora__dots {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1.4px);
+  background-image: radial-gradient(var(--grid) 1px, transparent 1.4px);
   background-size: 26px 26px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.35));
 }
 
-@keyframes sweep-a {
-  from { transform: translate3d(-18%, -6%, 0); }
-  to { transform: translate3d(16%, 8%, 0); }
-}
-@keyframes sweep-b {
-  from { transform: translate3d(14%, 10%, 0); }
-  to { transform: translate3d(-16%, -8%, 0); }
+
+/* phones: smaller blur radius, the GPU cost of frosted glass grows with it */
+@media (max-width: 760px) {
+  :root {
+    --blur-r: 14px;
+  }
 }
 
 /* ============================================================
    Liquid glass
    ============================================================
    .glass           surface (no background itself)
-   .glass__fx       backdrop blur + optional refraction (z -2)
-   ::before         tint + top gloss (z -1)
+   .glass__fx       frost + optional refraction (z -2)
+   ::before         tint + specular sheen (z -1)
    ::after          rim light (above content, pointer-events none)
 */
 .glass {
-  /* clear by default: a whisper of white, the edges do the talking */
-  --tint: rgba(255, 255, 255, 0.045);
-  --blur: 9px;
+  --tint: var(--glass-tint);
   --radius: 28px;
   position: relative;
   isolation: isolate;
   border-radius: var(--radius);
-  box-shadow:
-    0 18px 40px -14px rgba(2, 4, 24, 0.65),
-    0 2px 8px -2px rgba(2, 4, 24, 0.4);
+  box-shadow: var(--shadow);
 }
 
 .glass__fx {
@@ -210,9 +327,8 @@ html.sheet-open {
   inset: 0;
   z-index: -2;
   border-radius: inherit;
-  /* light frost, almost no colour boost: glass shows what is behind it, it doesn't turn it blue */
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(115%) brightness(1.08);
-  backdrop-filter: blur(var(--blur)) saturate(115%) brightness(1.08);
+  -webkit-backdrop-filter: blur(var(--blur-r)) saturate(var(--sat)) brightness(var(--bright));
+  backdrop-filter: blur(var(--blur-r)) saturate(var(--sat)) brightness(var(--bright));
   pointer-events: none;
 }
 
@@ -223,10 +339,10 @@ html.sheet-open {
   z-index: -1;
   border-radius: inherit;
   background:
-    /* specular sheen across the top-left, a softer catch at the bottom-right */
-    linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 32%, rgba(255, 255, 255, 0) 58%, rgba(255, 255, 255, 0.06) 100%),
+    linear-gradient(135deg, var(--sheen) 0%, transparent 38%, transparent 70%, var(--sheen) 140%),
     var(--tint);
   pointer-events: none;
+  transition: background 0.4s ease;
 }
 
 .glass::after {
@@ -236,13 +352,11 @@ html.sheet-open {
   z-index: 3;
   border-radius: inherit;
   pointer-events: none;
-  /* rim light: bright where the light hits, thin hairline all round, thickness glow inside */
   box-shadow:
-    inset 1.5px 1.5px 0.5px -0.5px rgba(255, 255, 255, 0.9),
-    inset -1.5px -1.5px 0.5px -0.5px rgba(255, 255, 255, 0.45),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    inset 0 14px 22px -16px rgba(255, 255, 255, 0.35),
-    inset 0 -14px 22px -16px rgba(255, 255, 255, 0.18);
+    inset 1.5px 1.5px 0.5px -0.5px var(--rim-hi),
+    inset -1px -1px 0.5px -0.5px var(--rim-lo),
+    inset 0 0 0 1px var(--rim-hair),
+    inset 0 16px 24px -20px var(--sheen);
 }
 
 /* Chromium: real refraction */
@@ -250,8 +364,8 @@ html.refract .glass--edge > .glass__fx {
   filter: url(#lg-edge);
 }
 html.refract .glass--lens > .glass__fx {
-  -webkit-backdrop-filter: blur(0.4px) saturate(135%) brightness(1.08);
-  backdrop-filter: blur(0.4px) saturate(135%) brightness(1.08);
+  -webkit-backdrop-filter: blur(0.5px) saturate(120%) brightness(1.06);
+  backdrop-filter: blur(0.5px) saturate(120%) brightness(1.06);
   filter: url(#lg-lens);
 }
 
@@ -262,13 +376,13 @@ html.refract .glass--lens > .glass__fx {
 
 /* Elsewhere, lens surfaces stay clear but lightly frosted */
 .glass--lens > .glass__fx {
-  -webkit-backdrop-filter: blur(2px) saturate(170%) brightness(1.1);
-  backdrop-filter: blur(2px) saturate(170%) brightness(1.1);
+  -webkit-backdrop-filter: blur(3px) saturate(120%) brightness(1.06);
+  backdrop-filter: blur(3px) saturate(120%) brightness(1.06);
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .glass::before {
-    background: rgba(18, 24, 70, 0.95);
+    background: var(--bg);
   }
 }
 
@@ -285,8 +399,7 @@ html.refract .glass--lens > .glass__fx {
   padding: 0 1.6rem;
   border-radius: 999px;
   font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  font-weight: 550;
   white-space: nowrap;
   transition:
     transform 0.5s var(--spring),
@@ -302,17 +415,16 @@ html.refract .glass--lens > .glass__fx {
 }
 .btn:disabled {
   cursor: not-allowed;
-  opacity: 0.45;
+  opacity: 0.4;
   transform: none;
 }
 
 .btn--primary {
-  color: #10155c;
-  background: linear-gradient(180deg, #ffffff 0%, #e6ebff 100%);
+  color: var(--on-solid);
+  background: var(--solid);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    inset 0 -2px 6px rgba(26, 34, 128, 0.16),
-    0 10px 28px -8px rgba(6, 8, 52, 0.65);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    var(--shadow-sm);
 }
 
 .btn--whatsapp {
@@ -320,8 +432,8 @@ html.refract .glass--lens > .glass__fx {
   background: linear-gradient(180deg, #5ef08f 0%, var(--wa) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    inset 0 -2px 6px rgba(0, 70, 30, 0.25),
-    0 10px 28px -8px rgba(0, 60, 25, 0.6);
+    inset 0 -2px 6px rgba(0, 70, 30, 0.2),
+    0 10px 24px -10px rgba(0, 90, 40, 0.55);
 }
 
 .btn--glass {
@@ -355,8 +467,6 @@ html.refract .glass--lens > .glass__fx {
 
 .nav__bar {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.12);
-  --blur: 10px;
   pointer-events: auto;
   display: flex;
   align-items: center;
@@ -373,7 +483,7 @@ html.refract .glass--lens > .glass__fx {
 .nav.is-scrolled .nav__bar {
   height: 56px;
   padding: 5px;
-  --tint: rgba(255, 255, 255, 0.16);
+  --tint: var(--glass-tint-hi);
 }
 
 .nav__brand {
@@ -383,22 +493,19 @@ html.refract .glass--lens > .glass__fx {
   gap: 10px;
   white-space: nowrap;
   padding-right: 10px;
-  font-weight: 700;
+  font-weight: 650;
   font-size: 1.0625rem;
-  letter-spacing: -0.01em;
   border-radius: 999px;
 }
 
 .nav__logo {
   --radius: 50%;
-  --tint: rgba(255, 255, 255, 0.24);
   display: grid;
   place-items: center;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  color: #fff;
-  box-shadow: 0 4px 14px -4px rgba(6, 8, 52, 0.5);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.6s var(--spring), width 0.6s var(--spring), height 0.6s var(--spring);
 }
 /* the logo badge sits inside the glass bubble, like a coin under glass */
@@ -406,7 +513,6 @@ html.refract .glass--lens > .glass__fx {
   width: calc(100% - 6px);
   height: calc(100% - 6px);
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 .nav__brand:hover .nav__logo {
   transform: rotate(-12deg) scale(1.08);
@@ -432,7 +538,7 @@ html.refract .glass--lens > .glass__fx {
   padding: 0 18px;
   border-radius: 999px;
   font-size: 0.96875rem;
-  font-weight: 500;
+  font-weight: 450;
   color: var(--text-2);
   transition: color 0.25s ease;
 }
@@ -447,7 +553,7 @@ html.refract .glass--lens > .glass__fx {
 /* the droplet that slides between links */
 .nav__blob {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.16);
+  --tint: var(--glass-tint-hi);
   position: absolute;
   top: 0;
   left: 0;
@@ -456,7 +562,7 @@ html.refract .glass--lens > .glass__fx {
   height: 100%;
   border-radius: 999px;
   transform-origin: 50% 50%;
-  box-shadow: 0 6px 18px -6px rgba(6, 8, 52, 0.55);
+  box-shadow: var(--shadow-sm);
   pointer-events: none;
 }
 
@@ -469,14 +575,11 @@ html.refract .glass--lens > .glass__fx {
   margin-left: 6px;
   padding: 0 20px;
   border-radius: 999px;
-  font-weight: 650;
+  font-weight: 550;
   font-size: 0.96875rem;
-  color: #10155c;
-  background: linear-gradient(180deg, #ffffff 0%, #e3e9ff 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -2px 6px rgba(26, 34, 128, 0.18),
-    0 6px 16px -6px rgba(6, 8, 52, 0.6);
+  color: var(--on-solid);
+  background: var(--solid);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), var(--shadow-sm);
   transition: transform 0.55s var(--spring);
 }
 .nav__cta:hover {
@@ -498,30 +601,44 @@ html.refract .glass--lens > .glass__fx {
   padding: 0 7px;
   border-radius: 999px;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 650;
   color: #fff;
-  background: linear-gradient(135deg, var(--indigo), #06b6d4);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 3px 8px rgba(79, 70, 229, 0.5);
+  background: var(--logo);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.nav__menu {
+/* round glass buttons in the bar: theme switch and phone menu */
+.nav__round {
   --radius: 50%;
-  --tint: rgba(255, 255, 255, 0.16);
-  display: none;
+  display: grid;
   place-items: center;
   width: 50px;
   height: 50px;
   flex: none;
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.5s var(--spring);
 }
-.nav__menu:active {
+.nav__round:active {
   transform: scale(0.9);
+}
+.nav__round svg {
+  transition: transform 0.6s var(--spring);
+}
+.nav__theme:hover svg {
+  transform: rotate(-25deg) scale(1.1);
+}
+.nav.is-scrolled .nav__round {
+  width: 46px;
+  height: 46px;
+}
+.nav__menu {
+  display: none;
 }
 
 .nav__sheet {
   --radius: 30px;
-  --tint: rgba(255, 255, 255, 0.14);
+  --tint: var(--glass-tint-hi);
   pointer-events: auto;
   position: absolute;
   top: calc(var(--nav-h) + 10px);
@@ -535,19 +652,32 @@ html.refract .glass--lens > .glass__fx {
 }
 
 .nav__sheet-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 15px 18px;
   border-radius: 20px;
   font-size: 1.1875rem;
-  font-weight: 600;
+  font-weight: 550;
+  text-align: left;
   transition: background-color 0.2s ease;
 }
 .nav__sheet-link:hover,
 .nav__sheet-link:active {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--raise);
+}
+.nav__sheet-theme {
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 20px 20px;
+  font-size: 1rem;
+  color: var(--text-2);
 }
 
 @media (max-width: 960px) {
-  .nav__links {
+  .nav__links,
+  .nav__theme {
     display: none;
   }
   .nav__bar {
@@ -580,6 +710,7 @@ html.refract .glass--lens > .glass__fx {
   .nav__cta {
     gap: 6px;
     margin-left: 0;
+    padding: 0 13px;
   }
   .nav__cta-label {
     display: none;
@@ -587,19 +718,20 @@ html.refract .glass--lens > .glass__fx {
   .nav__cta-short {
     display: inline;
   }
-  .nav__cta {
-    padding: 0 13px;
-  }
-  .nav__logo {
-    width: 44px;
-    height: 44px;
-  }
-  .nav__menu {
+  .nav__logo,
+  .nav__round {
     width: 44px;
     height: 44px;
   }
   .nav__bar {
     height: 58px;
+  }
+}
+
+/* very small phones: the logo alone carries the brand */
+@media (max-width: 340px) {
+  .nav__name {
+    display: none;
   }
 }
 
@@ -625,15 +757,14 @@ html.refract .glass--lens > .glass__fx {
 
 .hero__title {
   position: relative;
-  z-index: 0;
   display: flex;
   flex-direction: column;
-  font-size: clamp(3.25rem, 11.2vw, 11.5rem);
-  font-weight: 750;
-  font-stretch: 88%;
-  font-variation-settings: "wdth" 88, "opsz" 96;
-  line-height: 0.92;
-  letter-spacing: -0.018em;
+  font-size: clamp(3.25rem, 11vw, 11rem);
+  font-weight: 560;
+  font-stretch: 92%;
+  font-variation-settings: "wdth" 92, "opsz" 96;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
 }
 
 .hero__line {
@@ -648,7 +779,7 @@ html.refract .glass--lens > .glass__fx {
 }
 .hero__line--2 {
   padding-left: clamp(0px, 16vw, 300px);
-  color: #c8f4ff;
+  color: var(--text-3);
 }
 .hero__line--3 {
   padding-left: clamp(0px, 6vw, 110px);
@@ -672,7 +803,7 @@ html.refract .glass--lens > .glass__fx {
 .hero__lead {
   max-width: 58ch;
   font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--text-2);
 }
 
@@ -685,30 +816,31 @@ html.refract .glass--lens > .glass__fx {
   justify-content: flex-end;
 }
 
-/* the three offers from the Instagram bio; each opens the picker on that category */
 .pop {
   display: inline-flex;
 }
-.hero__offers > li {
-  display: inline-flex;
-}
+
+/* the three offers from the Instagram bio; each opens the picker on that category */
 .hero__offers {
   grid-area: offers;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
+.hero__offers > li {
+  display: inline-flex;
+}
 .offer {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.1);
   display: inline-flex;
   align-items: center;
   gap: 10px;
   min-height: 46px;
-  padding: 0 18px 0 8px;
+  padding: 0 18px 0 7px;
   border-radius: 999px;
   font-size: 0.96875rem;
-  font-weight: 550;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.5s var(--spring);
 }
 .offer:hover {
@@ -725,8 +857,8 @@ html.refract .glass--lens > .glass__fx {
   height: 32px;
   border-radius: 50%;
   font-size: 1.05rem;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  background: var(--raise-2);
+  box-shadow: var(--inset);
 }
 
 /* portrait tablets: a full-screen hero leaves a hole in the middle */
@@ -756,20 +888,18 @@ html.refract .glass--lens > .glass__fx {
   .hero__title {
     font-size: clamp(3rem, 15.5vw, 5rem);
   }
-  .hero__line--2 {
-    padding-left: 0;
-  }
+  .hero__line--2,
   .hero__line--3 {
     padding-left: 0;
-  }
-  .offer {
-    font-size: 0.9375rem;
   }
   .hero__actions .pop {
     flex: 1 1 auto;
   }
   .hero__actions .btn {
     width: 100%;
+  }
+  .offer {
+    font-size: 0.9375rem;
   }
 }
 
@@ -790,11 +920,11 @@ html.refract .glass--lens > .glass__fx {
 
 .section__title {
   font-size: clamp(2.25rem, 5vw, 4.5rem);
-  font-weight: 700;
-  font-stretch: 90%;
-  font-variation-settings: "wdth" 90, "opsz" 72;
-  line-height: 1;
-  letter-spacing: -0.015em;
+  font-weight: 560;
+  font-stretch: 94%;
+  font-variation-settings: "wdth" 94, "opsz" 72;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 /* masked words for the title reveal (SplitTitle) */
@@ -835,7 +965,6 @@ html.refract .glass--lens > .glass__fx {
 /* segmented control */
 .seg {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.08);
   padding: 5px;
   border-radius: 999px;
   max-width: 100%;
@@ -851,7 +980,7 @@ html.refract .glass--lens > .glass__fx {
   padding: 0 18px;
   border-radius: 999px;
   font-size: 0.9375rem;
-  font-weight: 550;
+  font-weight: 500;
   color: var(--text-2);
   white-space: nowrap;
   transition: color 0.25s ease;
@@ -865,14 +994,14 @@ html.refract .glass--lens > .glass__fx {
 }
 .seg__blob {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.2);
+  --tint: var(--glass-tint-hi);
   position: absolute;
   top: 0;
   left: 0;
   width: 0;
   height: 44px;
   border-radius: 999px;
-  box-shadow: 0 6px 16px -6px rgba(6, 8, 52, 0.6);
+  box-shadow: var(--shadow-sm);
   pointer-events: none;
 }
 
@@ -911,7 +1040,7 @@ html.refract .glass--lens > .glass__fx {
 
 .tile {
   --radius: 30px;
-  --tint: rgba(255, 255, 255, 0.04);
+  --blur-r: 16px;
   grid-column: span 2;
   display: flex;
   flex-direction: column;
@@ -929,14 +1058,13 @@ html.refract .glass--lens > .glass__fx {
   display: none;
 }
 .tile:hover {
-  --tint: rgba(255, 255, 255, 0.08);
+  --tint: var(--glass-tint-hi);
 }
 .tile.is-on {
-  --tint: rgba(255, 255, 255, 0.12);
+  --tint: var(--glass-tint-hi);
   box-shadow:
-    0 0 0 1.5px rgba(255, 255, 255, 0.85),
-    0 0 34px -6px rgba(34, 211, 238, 0.55),
-    0 18px 40px -14px rgba(2, 4, 24, 0.7);
+    0 0 0 1.5px var(--solid),
+    var(--shadow);
 }
 .tile:focus-visible {
   outline-offset: 4px;
@@ -950,8 +1078,8 @@ html.refract .glass--lens > .glass__fx {
 }
 .tile__name {
   font-size: clamp(1.375rem, 1.7vw, 1.75rem);
-  font-weight: 650;
-  line-height: 1.08;
+  font-weight: 560;
+  line-height: 1.1;
   letter-spacing: -0.01em;
 }
 .tile--lg .tile__name {
@@ -966,13 +1094,14 @@ html.refract .glass--lens > .glass__fx {
   height: 38px;
   border-radius: 50%;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  background: var(--raise-2);
+  box-shadow: var(--inset);
   transition: background 0.3s ease, color 0.3s ease;
 }
 .tile.is-on .tile__check {
-  color: #10155c;
-  background: #fff;
+  color: var(--on-solid);
+  background: var(--solid);
+  box-shadow: none;
 }
 
 .tile__blurb {
@@ -1001,7 +1130,7 @@ html.refract .glass--lens > .glass__fx {
   height: 5px;
   margin-top: 0.5em;
   border-radius: 50%;
-  background: var(--cyan);
+  background: var(--dot);
 }
 
 .tile__foot {
@@ -1018,13 +1147,13 @@ html.refract .glass--lens > .glass__fx {
   display: flex;
   flex-direction: column;
   font-size: clamp(1.5rem, 1.9vw, 1.875rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   line-height: 1.05;
 }
 .tile__price small {
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
   color: var(--text-3);
 }
@@ -1036,7 +1165,7 @@ html.refract .glass--lens > .glass__fx {
 /* summary panel */
 .summary {
   --radius: 34px;
-  --tint: rgba(255, 255, 255, 0.11);
+  --tint: var(--glass-tint-hi);
   position: sticky;
   top: calc(var(--nav-h) + 34px);
   display: flex;
@@ -1047,8 +1176,7 @@ html.refract .glass--lens > .glass__fx {
 }
 .summary__title {
   font-size: 1.375rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: 560;
 }
 .summary__empty {
   color: var(--text-3);
@@ -1066,11 +1194,12 @@ html.refract .glass--lens > .glass__fx {
   gap: 10px;
   padding: 10px 8px 10px 14px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--raise);
+  box-shadow: inset 0 0 0 1px var(--raise-line);
   font-size: 0.96875rem;
 }
 .summary__name {
-  font-weight: 550;
+  font-weight: 500;
 }
 .summary__price {
   color: var(--text-2);
@@ -1082,12 +1211,12 @@ html.refract .glass--lens > .glass__fx {
   height: 28px;
   border-radius: 50%;
   color: var(--text-2);
-  background: rgba(255, 255, 255, 0.1);
-  transition: background 0.2s ease, transform 0.4s var(--spring);
+  background: var(--raise-2);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.4s var(--spring);
 }
 .summary__remove:hover {
-  background: rgba(255, 110, 150, 0.55);
-  color: #fff;
+  background: var(--solid);
+  color: var(--on-solid);
   transform: scale(1.1);
 }
 
@@ -1104,8 +1233,8 @@ html.refract .glass--lens > .glass__fx {
 }
 .summary__total-value {
   font-size: clamp(2rem, 2.6vw, 2.625rem);
-  font-weight: 750;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1.05;
 }
 .summary__monthly {
@@ -1126,7 +1255,7 @@ html.refract .glass--lens > .glass__fx {
   padding: 0;
   margin-bottom: 6px;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 550;
   color: var(--text-2);
 }
 .addons__row {
@@ -1161,8 +1290,8 @@ html.refract .glass--lens > .glass__fx {
   height: 32px;
   margin: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  background: var(--raise);
+  box-shadow: var(--inset);
   cursor: pointer;
   transition: background 0.3s ease;
 }
@@ -1174,8 +1303,8 @@ html.refract .glass--lens > .glass__fx {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff 0%, #e8ecff 70%, #cfd6ff 100%);
-  box-shadow: 0 3px 8px rgba(6, 8, 52, 0.45), inset 0 -1px 2px rgba(26, 34, 128, 0.2);
+  background: radial-gradient(circle at 35% 30%, #fff 0%, #f1f3f7 70%, #dfe3ea 100%);
+  box-shadow: 0 3px 8px rgba(20, 26, 40, 0.3), inset 0 -1px 2px rgba(20, 26, 40, 0.12);
   transition: transform 0.55s var(--spring), width 0.25s var(--soft);
 }
 .switch:active::after {
@@ -1183,6 +1312,7 @@ html.refract .glass--lens > .glass__fx {
 }
 .switch:checked {
   background: linear-gradient(180deg, #5ef08f, var(--wa));
+  box-shadow: none;
 }
 .switch:checked::after {
   transform: translateX(20px);
@@ -1233,7 +1363,7 @@ html.refract .glass--lens > .glass__fx {
   }
   .mbar__pill {
     --radius: 999px;
-    --tint: rgba(255, 255, 255, 0.14);
+    --tint: var(--glass-tint-hi);
     max-width: 560px;
     margin-inline: auto;
     display: flex;
@@ -1254,8 +1384,7 @@ html.refract .glass--lens > .glass__fx {
   }
   .mbar__total {
     font-size: 1.1875rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: 600;
   }
 }
 
@@ -1275,7 +1404,6 @@ html.refract .glass--lens > .glass__fx {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 2.4vw, 36px);
-  counter-reset: step;
 }
 .steps__item {
   position: relative;
@@ -1292,11 +1420,10 @@ html.refract .glass--lens > .glass__fx {
   right: calc(clamp(20px, 2.4vw, 36px) * -1 + 8px);
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.08));
+  background: linear-gradient(90deg, var(--text-3), transparent);
 }
 .steps__num {
   --radius: 50%;
-  --tint: rgba(255, 255, 255, 0.14);
   display: grid;
   place-items: center;
   width: 64px;
@@ -1304,12 +1431,11 @@ html.refract .glass--lens > .glass__fx {
   margin-bottom: 10px;
   border-radius: 50%;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 560;
 }
 .steps__title {
   font-size: 1.375rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: 560;
   line-height: 1.15;
 }
 .steps__text {
@@ -1364,12 +1490,12 @@ html.refract .glass--lens > .glass__fx {
 }
 .examples__row:hover {
   padding-left: 22px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--raise);
 }
 .examples__name {
   font-size: clamp(1.5rem, 2.6vw, 2.5rem);
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-weight: 540;
+  letter-spacing: -0.015em;
   line-height: 1.1;
 }
 .examples__label {
@@ -1382,18 +1508,18 @@ html.refract .glass--lens > .glass__fx {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.examples__go-pop {
+  display: inline-flex;
+}
 .examples__go {
   --radius: 50%;
-  --tint: rgba(255, 255, 255, 0.12);
   display: grid;
   place-items: center;
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.5s var(--spring);
-}
-.examples__go-pop {
-  display: inline-flex;
 }
 .examples__row:hover .examples__go {
   transform: scale(1.12) rotate(45deg);
@@ -1443,11 +1569,10 @@ html.refract .glass--lens > .glass__fx {
 }
 .faq__item {
   --radius: 26px;
-  --tint: rgba(255, 255, 255, 0.07);
   border-radius: 26px;
 }
 .faq__item[open] {
-  --tint: rgba(255, 255, 255, 0.12);
+  --tint: var(--glass-tint-hi);
 }
 .faq__item summary {
   display: flex;
@@ -1457,8 +1582,7 @@ html.refract .glass--lens > .glass__fx {
   padding: 20px 22px;
   border-radius: 26px;
   font-size: 1.1875rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 540;
   cursor: pointer;
   list-style: none;
 }
@@ -1475,7 +1599,8 @@ html.refract .glass--lens > .glass__fx {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--raise-2);
+  box-shadow: var(--inset);
   transition: transform 0.5s var(--spring);
 }
 .faq__item[open] .faq__icon {
@@ -1501,7 +1626,6 @@ html.refract .glass--lens > .glass__fx {
 }
 .footer__bar {
   --radius: 999px;
-  --tint: rgba(255, 255, 255, 0.09);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1514,13 +1638,13 @@ html.refract .glass--lens > .glass__fx {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.125rem;
 }
 .footer__brand svg {
   flex: none;
   border-radius: 50%;
-  box-shadow: 0 4px 12px -4px rgba(6, 8, 52, 0.6);
+  box-shadow: var(--shadow-sm);
 }
 .footer__links {
   display: flex;
@@ -1572,14 +1696,13 @@ html.refract .glass--lens > .glass__fx {
 .sheet__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(4, 6, 28, 0.5);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: var(--overlay);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 .sheet__panel {
   --radius: 36px;
-  --tint: rgba(14, 18, 60, 0.45);
-  --blur: 24px;
+  --tint: var(--sheet-tint);
   position: relative;
   width: min(100%, 560px);
   max-height: min(92svh, 860px);
@@ -1603,19 +1726,19 @@ html.refract .glass--lens > .glass__fx {
 }
 .sheet__title {
   font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: 580;
+  letter-spacing: -0.015em;
   line-height: 1.1;
 }
 .sheet__close {
   --radius: 50%;
-  --tint: rgba(255, 255, 255, 0.14);
   flex: none;
   display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
   border-radius: 50%;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.45s var(--spring);
 }
 .sheet__close:hover {
@@ -1628,8 +1751,8 @@ html.refract .glass--lens > .glass__fx {
   gap: 12px;
   padding: 16px 18px;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  background: var(--raise);
+  box-shadow: inset 0 0 0 1px var(--raise-line);
 }
 .recap__list {
   display: flex;
@@ -1656,8 +1779,8 @@ html.refract .glass--lens > .glass__fx {
 }
 .recap__total strong {
   font-size: 1.5rem;
+  font-weight: 600;
   color: var(--text);
-  letter-spacing: -0.01em;
 }
 
 .form {
@@ -1672,7 +1795,7 @@ html.refract .glass--lens > .glass__fx {
 }
 .field label {
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 550;
 }
 .field__opt {
   font-weight: 400;
@@ -1686,8 +1809,8 @@ html.refract .glass--lens > .glass__fx {
   border: 0;
   border-radius: 18px;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  background: var(--raise);
+  box-shadow: var(--inset);
   transition: box-shadow 0.25s ease, background 0.25s ease;
   resize: vertical;
 }
@@ -1698,11 +1821,11 @@ html.refract .glass--lens > .glass__fx {
 .field input:focus,
 .field textarea:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), 0 0 0 2px var(--cyan);
+  background: var(--raise-2);
+  box-shadow: var(--inset), 0 0 0 2px var(--focus);
 }
 .field input[aria-invalid="true"] {
-  box-shadow: inset 0 1px 3px rgba(6, 8, 52, 0.3), 0 0 0 2px var(--alert);
+  box-shadow: var(--inset), 0 0 0 2px var(--alert);
 }
 .field__error {
   font-size: 0.875rem;
@@ -1742,23 +1865,20 @@ html.refract .glass--lens > .glass__fx {
   }
 }
 
+/* theme switch: the new theme is revealed in a growing circle (see lib/theme.ts) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 /* ============================================================
    Reduced motion
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .aurora__light {
-    animation: none;
-  }
   *,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
-  }
-}
-
-/* very small phones: the logo alone carries the brand */
-@media (max-width: 340px) {
-  .nav__name {
-    display: none;
   }
 }

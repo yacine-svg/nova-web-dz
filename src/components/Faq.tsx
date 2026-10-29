@@ -6,7 +6,7 @@ import SplitTitle from "./SplitTitle";
 export default function Faq() {
   return (
     <section id="faq" className="section faq">
-      <div className="wrap faq__layout" data-fx="section">
+      <div className="wrap faq__layout">
         <div className="section__head faq__head">
           <SplitTitle className="section__title" text="Questions fréquentes" />
           <p className="section__lead" data-fx="fade">
@@ -21,7 +21,7 @@ export default function Faq() {
         </div>
         <div className="faq__list">
           {faq.map((item) => (
-            <details key={item.q} className="faq__item glass glass--edge">
+            <details key={item.q} className="faq__item glass">
               <span className="glass__fx" aria-hidden="true" />
               <summary>
                 <span>{item.q}</span>

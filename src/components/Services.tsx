@@ -36,8 +36,8 @@ export default function Services() {
     const shown = tilesRef.current.querySelectorAll(".tile:not([hidden])");
     gsap.fromTo(
       shown,
-      { scale: 0.6, y: 40, rotation: (i: number) => (i % 2 ? 3 : -3) },
-      { scale: 1, y: 0, rotation: 0, duration: 1, stagger: 0.06, ease: "elastic.out(1, 0.7)", overwrite: true },
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: "power3.out", overwrite: true },
     );
   }, [filter]);
 
@@ -45,14 +45,14 @@ export default function Services() {
     toggleService(id);
     if (prefersReducedMotion()) return;
     const tile = e.currentTarget;
-    gsap.fromTo(tile, { scale: 0.965 }, { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.45)" });
+    gsap.fromTo(tile, { scale: 0.975 }, { scale: 1, duration: 0.45, ease: "back.out(2)" });
     const check = tile.querySelector(".tile__check");
     if (check) gsap.fromTo(check, { scale: 0.4, rotation: -45 }, { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.4)" });
   };
 
   return (
     <section id="services" className="section services">
-      <div className="wrap" data-fx="section">
+      <div className="wrap">
         <div className="section__head services__head">
           <div>
             <SplitTitle className="section__title" text="Composez votre projet" />
@@ -95,7 +95,7 @@ export default function Services() {
                   key={s.id}
                   type="button"
                   hidden={!shown}
-                  className={`tile glass glass--edge tile--${s.size} ${on ? "is-on" : ""}`}
+                  className={`tile glass tile--${s.size} ${on ? "is-on" : ""}`}
                   aria-pressed={on}
                   onClick={onTile(s.id)}
                 >

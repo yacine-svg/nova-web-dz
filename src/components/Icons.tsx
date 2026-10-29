@@ -80,3 +80,20 @@ export function NovaLogo({ size = 40, gradientId, className }: IconProps & { gra
     </svg>
   );
 }
+
+export function SunIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
+    </svg>
+  );
+}
+
+export function MoonIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
+      <path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7a8.3 8.3 0 1 0 10.9 10.9Z" />
+    </svg>
+  );
+}

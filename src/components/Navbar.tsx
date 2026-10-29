@@ -7,7 +7,8 @@ import { scrollToId } from "@/lib/scroll";
 import { useLiquidBlob } from "@/lib/useLiquidBlob";
 import { useSelection } from "./SelectionProvider";
 import { Fx } from "./Glass";
-import { MenuIcon, NovaLogo } from "./Icons";
+import { MenuIcon, MoonIcon, NovaLogo, SunIcon } from "./Icons";
+import { useTheme } from "@/lib/theme";
 
 export default function Navbar() {
   const { selected, openSheet } = useSelection();
@@ -24,6 +25,8 @@ export default function Navbar() {
   const firstRender = useRef(true);
 
   const moveBlob = useLiquidBlob(linksRef, blobRef, active);
+  const { theme, toggle: toggleTheme } = useTheme();
+  const themeLabel = theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre";
 
   // Which section is on screen
   useEffect(() => {
@@ -149,7 +152,17 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="nav__menu glass"
+          className="nav__round nav__theme glass"
+          aria-label={theme ? themeLabel : "Changer de thème"}
+          onClick={(e) => toggleTheme(e)}
+        >
+          <Fx />
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
+
+        <button
+          type="button"
+          className="nav__round nav__menu glass"
           aria-expanded={menuOpen}
           aria-controls="menu-mobile"
           aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
@@ -167,6 +180,15 @@ export default function Navbar() {
             {l.label}
           </a>
         ))}
+        <button
+          type="button"
+          className="nav__sheet-link nav__sheet-theme"
+          onClick={(e) => toggleTheme(e)}
+          tabIndex={menuOpen ? 0 : -1}
+        >
+          {theme === "dark" ? "Mode clair" : "Mode sombre"}
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+        </button>
       </div>
     </header>
   );

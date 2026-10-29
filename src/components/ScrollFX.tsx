@@ -10,10 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
  * Every scroll animation on the page, in and out. Runs on top of Lenis (see SmoothScroll).
  *
  * Markup hooks:
- *  [data-fx="section"]  section content tilts up into place and tilts away when you leave (scrubbed)
  *  [data-fx="title"]    words rise out of masks, sink back when the title leaves (SplitTitle)
- *  [data-fx="fade"]     text unblurs and rises in, blurs out on the way out (data-fx-delay="0.1")
- *  glass cards          pop in like drops, shrink away when they leave
+ *  [data-fx="fade"]     text rises in, sinks out on the way out (data-fx-delay="0.1")
+ *  glass cards          rise in softly, ease away when they leave
  *
  * Glass elements are only moved and scaled, never faded: below opacity 1 a browser drops their blur.
  * Never animate an element whose CSS has `transition: transform` (hover effects): animate a wrapper instead.
@@ -31,27 +30,6 @@ export default function ScrollFX() {
         const desktop = !!context.conditions?.desktop;
         const motion = !!context.conditions?.motion;
         if (!motion) return;
-
-        /* ---------- sections: tilt in, tilt away ---------- */
-        gsap.utils.toArray<HTMLElement>("[data-fx='section']").forEach((wrap) => {
-          const section = wrap.closest("section") ?? wrap;
-          const hidden = desktop ? { y: 160, scale: 0.88, rotationX: 16 } : { y: 70, scale: 0.95, rotationX: 0 };
-          const gone = desktop ? { y: -110, scale: 0.9, rotationX: -12 } : { y: -40, scale: 0.96, rotationX: 0 };
-          const rest = { y: 0, scale: 1, rotationX: 0 };
-          gsap.set(wrap, { transformPerspective: 1600, transformOrigin: "50% 50%" });
-
-          gsap.fromTo(wrap, hidden, {
-            ...rest,
-            ease: "none",
-            scrollTrigger: { trigger: section, start: "top bottom", end: "top 40%", scrub: 0.8 },
-          });
-          gsap.fromTo(wrap, rest, {
-            ...gone,
-            ease: "none",
-            immediateRender: false,
-            scrollTrigger: { trigger: section, start: "bottom 55%", end: "bottom top", scrub: 0.8 },
-          });
-        });
 
         /* ---------- titles: masked words ---------- */
         gsap.utils.toArray<HTMLElement>("[data-fx='title']").forEach((title) => {
@@ -73,12 +51,11 @@ export default function ScrollFX() {
         gsap.utils.toArray<HTMLElement>("[data-fx='fade']").forEach((el) => {
           gsap.fromTo(
             el,
-            { y: 40, opacity: 0, filter: "blur(12px)" },
+            { y: 32, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              filter: "blur(0px)",
-              duration: 1,
+              duration: 0.9,
               delay: Number(el.dataset.fxDelay || 0),
               ease: "power3.out",
               scrollTrigger: { trigger: el, start: "top 92%", end: "bottom 10%", toggleActions: "play reverse play reverse" },
@@ -86,50 +63,46 @@ export default function ScrollFX() {
           );
         });
 
-        /* ---------- glass cards: pop in like drops, shrink away ---------- */
-        const drops = (selector: string, hiddenState: gsap.TweenVars, goneState: gsap.TweenVars, stagger = 0.08) => {
+        /* ---------- glass cards: rise in softly, ease away ----------
+           Kept cheap on purpose: every glass card re-blurs what is behind it on each frame it moves,
+           so cards only slide and scale a little, with a short calm ease, and never all at once. */
+        const rise = (selector: string, distance = 60, stagger = 0.07) => {
           const els = gsap.utils.toArray<HTMLElement>(selector);
           if (!els.length) return;
-          const rest = { x: 0, y: 0, scale: 1, scaleX: 1, scaleY: 1, rotation: 0, rotationX: 0 };
-          gsap.set(els, { transformPerspective: 900, ...hiddenState });
+          const hiddenState = { y: distance, scale: 0.97, opacity: 0 };
+          const rest = { y: 0, scale: 1, opacity: 1 };
+          gsap.set(els, hiddenState);
           ScrollTrigger.batch(els, {
-            start: "top 94%",
-            end: "bottom 22%",
-            onEnter: (batch) =>
-              gsap.to(batch, { ...rest, duration: 1.2, stagger, ease: "elastic.out(1, 0.72)", overwrite: true }),
-            onEnterBack: (batch) =>
-              gsap.to(batch, { ...rest, duration: 1.1, stagger: stagger * 0.6, ease: "elastic.out(1, 0.72)", overwrite: true }),
+            start: "top 92%",
+            end: "bottom 18%",
+            onEnter: (batch) => gsap.to(batch, { ...rest, duration: 0.75, stagger, ease: "power3.out", overwrite: true }),
+            onEnterBack: (batch) => gsap.to(batch, { ...rest, duration: 0.6, stagger: stagger * 0.6, ease: "power3.out", overwrite: true }),
             onLeave: (batch) =>
-              gsap.to(batch, { ...goneState, duration: 0.55, stagger: stagger * 0.5, ease: "power2.in", overwrite: true }),
-            onLeaveBack: (batch) =>
-              gsap.to(batch, { ...hiddenState, duration: 0.55, stagger: stagger * 0.5, ease: "power2.in", overwrite: true }),
+              gsap.to(batch, { y: -distance * 0.5, scale: 0.98, opacity: 0, duration: 0.45, ease: "power2.in", overwrite: true }),
+            onLeaveBack: (batch) => gsap.to(batch, { ...hiddenState, duration: 0.45, ease: "power2.in", overwrite: true }),
           });
         };
 
-        drops(
-          ".tile",
-          { y: 110, scale: 0.55, rotation: (i: number) => (i % 2 ? 5 : -5) },
-          { y: -60, scale: 0.75, rotation: (i: number) => (i % 2 ? -4 : 4) },
-        );
-        drops(".seg", { y: 30, scale: 0.6 }, { y: -20, scale: 0.8 });
-        drops(".steps__num", { scale: 0, rotation: -90 }, { scale: 0.3, rotation: 90 }, 0.14);
-        drops(".faq__item", { y: 80, scale: 0.9, rotationX: -35 }, { y: -40, scale: 0.92, rotationX: 25 }, 0.07);
-        drops(".footer__bar", { y: 50, scaleX: 0.55, scaleY: 0.7 }, { y: 0, scaleX: 0.9, scaleY: 0.9 });
+        rise(".tile");
+        rise(".seg", 24);
+        rise(".steps__num", 30, 0.12);
+        rise(".faq__item", 40, 0.06);
+        rise(".footer__bar", 30);
 
         /* ---------- summary: sticky, so it follows the whole picker rather than its own position ---------- */
         const summary = document.querySelector(".summary");
         const layout = document.querySelector(".services__layout");
         if (summary && layout) {
-          const away = { y: 120, scale: 0.8, rotationX: 20 };
-          const here = { y: 0, scale: 1, rotationX: 0 };
-          gsap.set(summary, { transformPerspective: 900, ...away });
+          const away = { y: 60, scale: 0.97, opacity: 0 };
+          const here = { y: 0, scale: 1, opacity: 1 };
+          gsap.set(summary, away);
           ScrollTrigger.create({
             trigger: layout,
             start: "top 80%",
             end: "bottom 35%",
-            onEnter: () => gsap.to(summary, { ...here, duration: 1.2, ease: "elastic.out(1, 0.72)", overwrite: true }),
-            onEnterBack: () => gsap.to(summary, { ...here, duration: 1.1, ease: "elastic.out(1, 0.72)", overwrite: true }),
-            onLeave: () => gsap.to(summary, { y: -40, scale: 0.9, duration: 0.5, ease: "power2.in", overwrite: true }),
+            onEnter: () => gsap.to(summary, { ...here, duration: 0.8, ease: "power3.out", overwrite: true }),
+            onEnterBack: () => gsap.to(summary, { ...here, duration: 0.6, ease: "power3.out", overwrite: true }),
+            onLeave: () => gsap.to(summary, { y: -30, opacity: 0, duration: 0.45, ease: "power2.in", overwrite: true }),
             onLeaveBack: () => gsap.to(summary, { ...away, duration: 0.5, ease: "power2.in", overwrite: true }),
           });
         }
@@ -158,11 +131,11 @@ export default function ScrollFX() {
           tl.from(item.querySelector(".examples__rule"), { scaleX: 0, duration: 0.9, ease: "power3.inOut" })
             .from(
               item.querySelector(".examples__name"),
-              { xPercent: fromLeft ? -18 : 18, opacity: 0, filter: "blur(10px)", duration: 0.9, ease: "power3.out" },
+              { xPercent: fromLeft ? -10 : 10, opacity: 0, duration: 0.8, ease: "power3.out" },
               0.1,
             )
             .from(item.querySelectorAll(".examples__label, .examples__url"), { y: 24, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.25)
-            .from(item.querySelector(".examples__go-pop"), { scale: 0, rotation: -140, duration: 1, ease: "elastic.out(1, 0.6)" }, 0.3);
+            .from(item.querySelector(".examples__go-pop"), { scale: 0.5, opacity: 0, duration: 0.6, ease: "back.out(1.6)" }, 0.25);
         });
       },
     );

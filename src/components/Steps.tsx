@@ -4,7 +4,7 @@ import SplitTitle from "./SplitTitle";
 export default function Steps() {
   return (
     <section id="methode" className="section steps">
-      <div className="wrap" data-fx="section">
+      <div className="wrap">
         <div className="section__head">
           <SplitTitle className="section__title" text="Comment ça marche" />
           <p className="section__lead" data-fx="fade">

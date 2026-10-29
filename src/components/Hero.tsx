@@ -24,7 +24,7 @@ export default function Hero() {
       // In: lines rise out of their masks, then the rest lands
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
       tl.from(".hero__line-inner", { yPercent: 118, rotation: 4, duration: 1.2, stagger: 0.11 })
-        .from(".hero__lead", { y: 40, opacity: 0, filter: "blur(10px)", duration: 1 }, 0.55)
+        .from(".hero__lead", { y: 40, opacity: 0, duration: 1 }, 0.55)
         // wrappers, not the buttons: the buttons have a CSS hover transition on transform that would fight GSAP
         .from(".hero__actions .pop", { scale: 0.5, y: 30, duration: 1.2, stagger: 0.1, ease: "elastic.out(1, 0.6)" }, 0.7)
         .from(".hero__offers > li", { scale: 0.4, y: 40, duration: 1.2, stagger: 0.09, ease: "elastic.out(1, 0.65)" }, 0.8);
@@ -39,7 +39,7 @@ export default function Hero() {
         .to(".hero__line--1", { xPercent: -22, opacity: 0 }, 0)
         .to(".hero__line--2", { xPercent: 18, opacity: 0 }, 0)
         .to(".hero__line--3", { xPercent: -14, opacity: 0 }, 0)
-        .to(".hero__title", { scale: 0.86, filter: "blur(6px)", transformOrigin: "50% 0%" }, 0)
+        .to(".hero__title", { scale: 0.9, transformOrigin: "50% 0%" }, 0)
         .to(".hero__lead-wrap", { y: -70, opacity: 0 }, 0)
         // glass pieces move and shrink, they don't fade (fading switches off their blur)
         .to(".hero__actions", { y: -90, scale: 0.88, transformOrigin: "100% 100%" }, 0)
